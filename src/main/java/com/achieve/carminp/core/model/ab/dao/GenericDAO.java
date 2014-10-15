@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.achieve.carminp.core.model.ab.dao;
 
 import java.lang.reflect.ParameterizedType;
@@ -12,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import com.achieve.carminp.core.model.in.dao.IGenericDAO;
 import com.achieve.carminp.core.model.in.entidade.IEntity;
@@ -27,9 +26,10 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
  * @see IEntity
  * @param <T>
  */
+@Transactional(value = TxType.REQUIRED)
 public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T> {
 
-	@PersistenceContext
+	@PersistenceContext(unitName = "carminpDS")
 	protected EntityManager em;
 	
 	/**
