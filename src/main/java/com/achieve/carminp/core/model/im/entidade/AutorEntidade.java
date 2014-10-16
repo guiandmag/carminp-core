@@ -45,10 +45,18 @@ public class AutorEntidade implements IEntity<Long> {
 	@XmlElementWrapper
 	private FraseEntidade frases;
 
+	
 	public AutorEntidade() {
 		super();
 	}   
 	
+	public AutorEntidade(Long id, String nome, FraseEntidade frases) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.frases = frases;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -56,6 +64,65 @@ public class AutorEntidade implements IEntity<Long> {
 	@Override
 	public Long getId() {
 		return id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public FraseEntidade getFrases() {
+		return frases;
+	}
+
+	public void setFrases(FraseEntidade frases) {
+		this.frases = frases;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((frases == null) ? 0 : frases.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AutorEntidade other = (AutorEntidade) obj;
+		if (frases == null) {
+			if (other.frases != null)
+				return false;
+		} else if (!frases.equals(other.frases))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "AutorEntidade [id=" + id + ", nome=" + nome + ", frases="
+				+ frases + "]";
 	}
 
 }

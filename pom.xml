@@ -17,6 +17,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.organization.name>ACHIEVE</project.organization.name>
 		<project.carminp.name>Carminp</project.carminp.name>
+		<project.version.java>1.8</project.version.java>
+		<project.version.hibernate>4.3.6.Final</project.version.hibernate>
 	</properties>
 
 	<dependencies>
@@ -60,12 +62,28 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-		<dependency>
-			<groupId>org.perf4j</groupId>
-			<artifactId>perf4j</artifactId>
-			<version>0.9.16</version>
-		</dependency>
 		<!-- FIM LOG API's IMPORTS -->
+		<!-- EASY CRITERIA API's IMPORTS -->
+		<dependency>
+			<groupId>uaihebert.com</groupId>
+			<artifactId>EasyCriteria</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<!-- FIM EASY CRITERIA API's IMPORTS -->
+		<!-- HIBERNATE API's IMPORTS -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${project.version.hibernate}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${project.version.hibernate}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- FIM HIBERNATE API's IMPORTS -->
 	</dependencies>
 
 	<build>
@@ -113,13 +131,34 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	<profiles>
+        <profile>
+            <!-- Utilizado no build do Openshift -->
+            <id>openshift</id>
+            <build>
+                <finalName>${project.carminp.name}</finalName>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.4</version>
+                        <configuration>
+                            <outputDirectory>deployments</outputDirectory>
+                            <warName>ROOT</warName>
+                           <failOnMissingWebXml>false</failOnMissingWebXml>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 	<developers>
 		<developer>
 			<name>Guilherme Magalhaes</name>
 			<email>guilherme.magalhaes@consulters.com.br</email>
 			<roles>
-				<role>Team Leader</role>
+				<role>Leader</role>
 				<role>CTO</role>
 				<role>Developer</role>
 			</roles>

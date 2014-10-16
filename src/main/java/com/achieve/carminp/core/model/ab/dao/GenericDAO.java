@@ -12,6 +12,9 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.achieve.carminp.core.model.in.dao.IGenericDAO;
 import com.achieve.carminp.core.model.in.entidade.IEntity;
 
@@ -29,6 +32,8 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
 @Transactional(value = TxType.REQUIRED)
 public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T> {
 
+	private static final Logger logger = LoggerFactory.getLogger(GenericDAO.class);
+	
 	@PersistenceContext(unitName = "carminpDS")
 	protected EntityManager em;
 	
@@ -53,6 +58,8 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 	@Override
 	public void delete(Object id) throws EntityNotFoundException {
 		em.remove(this.getById(id));
+		
+		logger.debug("Objeto removido");
 	}
 	
 	/**
@@ -76,6 +83,8 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findAll() {
+		logger.debug("Lista de objetos recuperada");
+		
 		Query q = em.createQuery("from " + getClassT().getName() + " t");
 		return q.getResultList();
 	}
@@ -88,6 +97,8 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 	@Override
 	public List<T> findByFields(Map<String, Object> fields, Boolean exclusive,
 			int maxResults, String orderBy) {
+		logger.debug("Recuperar objeto por parametros");
+		
 		StringBuilder strbld = new StringBuilder("from "  + getClassT().getName() + " t"); 
 		String param = ""; 
 		String connector = " where "; 

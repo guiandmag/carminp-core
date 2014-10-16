@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema">
+	<datasource jndi-name="java:jboss/datasources/carminp"
+		enabled="true" use-java-context="true" pool-name="carmnip">
+		<connection-url>jdbc:postgresql://localhost:5432/carminp</connection-url>
+		<driver>org.postgresql</driver>
+		<pool>
+			<min-pool-size>10</min-pool-size>
+			<max-pool-size>100</max-pool-size>
+			<prefill>true</prefill>
+		</pool>
+		<security>
+			<user-name>postgres</user-name>
+			<password>carminppass</password>
+		</security>
+		<statement>
+			<prepared-statement-cache-size>32</prepared-statement-cache-size>
+			<share-prepared-statements>true</share-prepared-statements>
+		</statement>
+	</datasource>
+</datasources>
