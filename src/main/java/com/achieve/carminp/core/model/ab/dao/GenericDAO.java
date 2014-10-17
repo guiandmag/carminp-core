@@ -9,8 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +27,6 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
  * @see IEntity
  * @param <T>
  */
-@Transactional(value = TxType.REQUIRED)
 public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T> {
 
 	private static final Logger logger = LoggerFactory.getLogger(GenericDAO.class);

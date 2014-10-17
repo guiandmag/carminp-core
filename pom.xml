@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.achieve</groupId>
 	<version>1.0</version>
-	<artifactId>${project.carminp.name}</artifactId>
+	<artifactId>Carminp</artifactId>
 	<packaging>war</packaging>
 
 	<description>Projeto Carminp - Projeto Core do Carminp</description>
@@ -128,30 +128,35 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<groupId>org.wildfly.plugins</groupId>
+					<artifactId>wildfly-maven-plugin</artifactId>
+					<version>1.0.2.Final</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<profiles>
-        <profile>
-            <!-- Utilizado no build do Openshift -->
-            <id>openshift</id>
-            <build>
-                <finalName>${project.carminp.name}</finalName>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>2.4</version>
-                        <configuration>
-                            <outputDirectory>deployments</outputDirectory>
-                            <warName>ROOT</warName>
-                           <failOnMissingWebXml>false</failOnMissingWebXml>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+		<profile>
+			<!-- Utilizado no build do Openshift -->
+			<id>openshift</id>
+			<build>
+				<finalName>${project.carminp.name}</finalName>
+				<plugins>
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.4</version>
+						<configuration>
+							<outputDirectory>deployments</outputDirectory>
+							<warName>ROOT</warName>
+							<failOnMissingWebXml>false</failOnMissingWebXml>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<developers>
 		<developer>

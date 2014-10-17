@@ -1,10 +1,9 @@
 package com.achieve.carminp.core.model.im.entidade;
 
 import java.lang.Long;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -45,15 +44,16 @@ public class FraseEntidade implements IEntity<Long> {
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "autor_id", nullable = false)
+	@Valid
 	@XmlElementWrapper
-	private Set<AutorEntidade> autor = new LinkedHashSet<AutorEntidade>();
+	private AutorEntidade autor;
 	
 	
 	public FraseEntidade() {
 		super();
 	}   
 	
-	public FraseEntidade(Long id, String frase, Set<AutorEntidade> autor) {
+	public FraseEntidade(Long id, String frase, AutorEntidade autor) {
 		super();
 		this.id = id;
 		this.frase = frase;
@@ -77,11 +77,11 @@ public class FraseEntidade implements IEntity<Long> {
 		this.frase = frase;
 	}
 
-	public Set<AutorEntidade> getAutor() {
+	public AutorEntidade getAutor() {
 		return autor;
 	}
 
-	public void setAutor(Set<AutorEntidade> autor) {
+	public void setAutor(AutorEntidade autor) {
 		this.autor = autor;
 	}
 

@@ -1,6 +1,8 @@
 package com.achieve.carminp.core.model.im.entidade;
 
 import java.lang.Long;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -43,14 +45,14 @@ public class AutorEntidade implements IEntity<Long> {
 	
 	@OneToMany(mappedBy = "autor", orphanRemoval = true)
 	@XmlElementWrapper
-	private FraseEntidade frases;
+	private List<FraseEntidade> frases = new LinkedList<FraseEntidade>();
 
 	
 	public AutorEntidade() {
 		super();
 	}   
 	
-	public AutorEntidade(Long id, String nome, FraseEntidade frases) {
+	public AutorEntidade(Long id, String nome, List<FraseEntidade> frases) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -74,11 +76,11 @@ public class AutorEntidade implements IEntity<Long> {
 		this.nome = nome;
 	}
 
-	public FraseEntidade getFrases() {
+	public List<FraseEntidade> getFrases() {
 		return frases;
 	}
 
-	public void setFrases(FraseEntidade frases) {
+	public void setFrases(List<FraseEntidade> frases) {
 		this.frases = frases;
 	}
 
