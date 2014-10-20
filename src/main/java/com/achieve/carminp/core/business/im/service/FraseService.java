@@ -13,7 +13,6 @@ import com.achieve.carminp.core.model.im.entidade.FraseEntidade;
  * @author guilherme.magalhaes
  * @version 1.0
  * @see GenericDAO, {@link FraseEntidade}, {@link IFraseService}
- * 
  */
 @Stateless
 public class FraseService extends GenericDAO<FraseEntidade> implements 

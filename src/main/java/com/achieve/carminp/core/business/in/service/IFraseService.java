@@ -13,7 +13,6 @@ import com.achieve.carminp.core.model.in.dao.IGenericDAO;
  * @since 09/2014
  * @version 1.0
  * @see FraseEntidade
- *
  */
 @Local
 public interface IFraseService extends IGenericDAO<FraseEntidade> {

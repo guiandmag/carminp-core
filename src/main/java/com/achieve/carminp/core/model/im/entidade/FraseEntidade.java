@@ -23,7 +23,7 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
 @Entity
 @Table(name = "TBL_FRASE")
 @SequenceGenerator(name = FraseEntidade.FRASE_SEQUENCIA, sequenceName = FraseEntidade.FRASE_SEQUENCIA, initialValue = 1, allocationSize = 50)
-@XmlRootElement
+@XmlRootElement(name = "frase")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FraseEntidade implements IEntity<Long> {
 

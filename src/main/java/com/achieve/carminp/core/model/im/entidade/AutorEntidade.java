@@ -24,7 +24,7 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
 @Entity
 @Table(name = "TBL_AUTOR", indexes = { @Index(columnList = "autor_nome") })
 @SequenceGenerator(name = AutorEntidade.AUTOR_SEQUENCIA, sequenceName = AutorEntidade.AUTOR_SEQUENCIA, initialValue = 1, allocationSize = 50)
-@XmlRootElement
+@XmlRootElement(name = "autor")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AutorEntidade implements IEntity<Long> {
 
