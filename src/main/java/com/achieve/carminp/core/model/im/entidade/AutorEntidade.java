@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.achieve.carminp.core.model.in.entidade.IEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * Entidade para representar o autor da frase a ser salva.
@@ -43,7 +44,8 @@ public class AutorEntidade implements IEntity<Long> {
 	@XmlElement
 	private String nome;
 	
-	@OneToMany(mappedBy = "autor", orphanRemoval = true)
+	@OneToMany(mappedBy = "autor", orphanRemoval = true, fetch = FetchType.EAGER)
+	@JsonManagedReference
 	@XmlElementWrapper
 	private List<FraseEntidade> frases = new LinkedList<FraseEntidade>();
 

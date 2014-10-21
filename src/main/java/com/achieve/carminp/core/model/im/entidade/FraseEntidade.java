@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.achieve.carminp.core.model.in.entidade.IEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * Entidade para representar a frase a ser salva no DB.
@@ -42,9 +43,10 @@ public class FraseEntidade implements IEntity<Long> {
 	@XmlElement
 	private String frase;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "autor_id", nullable = false)
 	@Valid
+	@JsonBackReference
 	@XmlElementWrapper
 	private AutorEntidade autor;
 	

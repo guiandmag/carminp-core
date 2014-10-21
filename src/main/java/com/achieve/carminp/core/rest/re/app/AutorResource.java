@@ -3,10 +3,12 @@
  */
 package com.achieve.carminp.core.rest.re.app;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -15,7 +17,12 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.Response.Status;
 
 import com.achieve.carminp.core.business.in.service.IAutorService;
 import com.achieve.carminp.core.model.im.entidade.AutorEntidade;
@@ -38,26 +45,41 @@ public class AutorResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void salvar(@Valid AutorEntidade autor) {
-		 service.save(autor);
+	public Response criarAutor(@Valid AutorEntidade autor, @Context HttpServletRequest req) {
+		try {
+			service.save(autor);
+		} catch (Exception e) {
+			throw new WebApplicationException(Status.CONFLICT);
+		}
+		
+		URI uri = UriBuilder.fromPath("autor/{nome}").build(
+						autor.getNome());
+		
+		return Response.created(uri).entity(autor).build();
 	}
 	
 	@GET
-	@Path("{id}")
+	@Path("{id:[0-9][0-9]*}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public AutorEntidade buscarPorId(@PathParam("id") Long idAutor) {
-		return service.getById(idAutor);
+	public AutorEntidade buscarAutorPorId(@PathParam("id")final Long idAutor) {
+		AutorEntidade autorEncontrado = service.getById(idAutor);
+		if (autorEncontrado != null)
+			return autorEncontrado;
+		
+		throw new WebApplicationException(Status.NOT_FOUND);
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<AutorEntidade> buscarTodosAutores() {
-		return service.findAll();
+		List<AutorEntidade> autoresEncontrados = service.findAll();
+		
+		return autoresEncontrados;
 	}
 	
 	@DELETE
-	@Path("{id}")
-	public void remover(@PathParam("id") Long idAutor) {
+	@Path("{id:[0-9][0-9]*}")
+	public void removerAutor(@PathParam("id")final Long idAutor) {
 		service.delete(idAutor);
 	}
 }
