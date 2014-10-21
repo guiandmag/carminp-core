@@ -29,7 +29,7 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
  */
 public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T> {
 
-	private static final Logger logger = LoggerFactory.getLogger(GenericDAO.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericDAO.class);
 	
 	@PersistenceContext(unitName = "carminpDS")
 	protected EntityManager em;
@@ -42,9 +42,11 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 	public void save(T entity) {
 		Object id = entity.getId();
 		
-		if (id == null)
+		if (id == null) {
+			LOGGER.info("Entidade persistida {}", entity.getClass().getName());
 			em.persist(entity);
-		else 
+		} else 
+			LOGGER.info("Entidade atualizada {}", entity.getClass().getName());
 			em.merge(entity);
 	}
 	
@@ -55,8 +57,6 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 	@Override
 	public void delete(Object id) throws EntityNotFoundException {
 		em.remove(this.getById(id));
-		
-		logger.debug("Objeto removido");
 	}
 	
 	/**
@@ -80,8 +80,6 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findAll() {
-		logger.debug("Lista de objetos recuperada");
-		
 		Query q = em.createQuery("from " + getClassT().getName() + " t");
 		return q.getResultList();
 	}
@@ -94,8 +92,6 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 	@Override
 	public List<T> findByFields(Map<String, Object> fields, Boolean exclusive,
 			int maxResults, String orderBy) {
-		logger.debug("Recuperar objeto por parametros");
-		
 		StringBuilder strbld = new StringBuilder("from "  + getClassT().getName() + " t"); 
 		String param = ""; 
 		String connector = " where "; 

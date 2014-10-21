@@ -1,7 +1,5 @@
 package com.achieve.carminp.core.business.in.service;
 
-import java.util.List;
-
 import javax.ejb.Local;
 
 import com.achieve.carminp.core.model.im.entidade.AutorEntidade;
@@ -19,6 +17,4 @@ import com.achieve.carminp.core.model.in.dao.IGenericDAO;
 @Local
 public interface IAutorService extends IGenericDAO<AutorEntidade> {
 	
-	List<AutorEntidade> getMostAuthorsWithPhrases();
-
 }

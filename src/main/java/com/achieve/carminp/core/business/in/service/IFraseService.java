@@ -17,4 +17,6 @@ import com.achieve.carminp.core.model.in.dao.IGenericDAO;
 @Local
 public interface IFraseService extends IGenericDAO<FraseEntidade> {
 
+	FraseEntidade getPhrasesByAuthorId(Long id);
+	
 }

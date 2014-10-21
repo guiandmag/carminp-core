@@ -1,10 +1,23 @@
-/**
- * 
- */
 package com.achieve.carminp.core.rest.re.app;
 
-import javax.enterprise.context.RequestScoped;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.achieve.carminp.core.business.in.service.IFraseService;
+import com.achieve.carminp.core.model.im.entidade.FraseEntidade;
 
 /**
  * Define o servico <b>REST</b> em que representara
@@ -14,8 +27,51 @@ import javax.ws.rs.Path;
  * @since 09/2014
  * @version 1.0
  */
-@RequestScoped
 @Path("/frase")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class FraseResource {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(FraseResource.class.getName());
+	
+	@Inject
+	IFraseService service;
 
+	@GET
+	public List<FraseEntidade> buscarTodasFrases() {
+		List<FraseEntidade> frasesEcontradas = service.findAll();
+		
+		return frasesEcontradas;
+	}
+	
+	@GET
+	@Path("/{id:[0-9][0-9]*}")
+	public FraseEntidade buscarFrasePorId(@PathParam("id") Long idFrase) {
+		FraseEntidade fraseEncontrada = service.getById(idFrase);
+		if(fraseEncontrada != null)
+			return fraseEncontrada;
+		
+		throw new WebApplicationException(Status.NOT_FOUND);
+	}
+	
+	@GET
+	@Path("/{idAutor:[0-9][0-9]*}")
+	public FraseEntidade buscarFrasePorAutorId(@PathParam("id") Long idAutor) {
+		FraseEntidade fraseEncontrada = service.getPhrasesByAuthorId(idAutor);
+		if(fraseEncontrada != null) 
+			return fraseEncontrada;
+		
+		throw new WebApplicationException(Status.NOT_FOUND);
+	}
+
+	@DELETE
+	@Path("/{id:[0-9][0-9]*}")
+	public void removeFrase(@PathParam("id") final Long idFrase) {
+		if(idFrase != null) {
+			LOGGER.info("Removendo frase com o id {}", idFrase);
+			service.delete(idFrase);
+		} else {
+			LOGGER.info("Frase com id {} não existe e, portanto, nada foi excluído", idFrase);
+		}
+	}
 }
