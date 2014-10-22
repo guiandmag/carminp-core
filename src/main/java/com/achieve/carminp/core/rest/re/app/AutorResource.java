@@ -61,13 +61,13 @@ public class AutorResource {
 	}
 	
 	@GET
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	public AutorEntidade buscarAutorPorId(@PathParam("id") Long idAutor) {
 		AutorEntidade autorEncontrado = service.getById(idAutor);
-		if (autorEncontrado != null) 
-			return autorEncontrado;
-		
-		throw new WebApplicationException(Status.NOT_FOUND);
+		if (autorEncontrado == null)
+			LOGGER.debug("Autor com o id {}, nao encontrado", idAutor);
+			
+		return autorEncontrado;
 	}
 	
 	@GET
@@ -89,7 +89,7 @@ public class AutorResource {
 	}
 	
 	@DELETE
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	public void removerAutor(@PathParam("id") Long idAutor) {
 		if (idAutor != null) {
 			LOGGER.info("Removendo autor com id {}", idAutor);
