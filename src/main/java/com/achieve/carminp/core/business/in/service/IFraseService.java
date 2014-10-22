@@ -1,5 +1,7 @@
 package com.achieve.carminp.core.business.in.service;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 import com.achieve.carminp.core.model.im.entidade.FraseEntidade;
@@ -17,6 +19,20 @@ import com.achieve.carminp.core.model.in.dao.IGenericDAO;
 @Local
 public interface IFraseService extends IGenericDAO<FraseEntidade> {
 
-	FraseEntidade getPhrasesByAuthorId(Long id);
+	/**
+	 * Metodo para recuperar as frases pelo id do autor desejado.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	List<FraseEntidade> getPhrasesByAuthorId(Long id);
+	
+	/**
+	 * Metodo para recuperar as frases pelo id do autor desejado.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	List<FraseEntidade> getPhrasesByAuthorName(String name);
 	
 }

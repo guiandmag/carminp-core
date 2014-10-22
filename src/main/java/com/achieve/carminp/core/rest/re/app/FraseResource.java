@@ -45,6 +45,17 @@ public class FraseResource {
 	}
 	
 	@GET
+	@Path("/autor/{nome}")
+	public List<FraseEntidade> buscarFrasesPorAutorNome(@PathParam("nome") String nomeAutor) {
+		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorName(nomeAutor);
+		
+		if(frasesEcontradas == null) 
+			LOGGER.info("Frases nao encontradas do seguinte autor {}", nomeAutor);
+		
+		return frasesEcontradas;
+	}
+	
+	@GET
 	@Path("/{id:[0-9][0-9]*}")
 	public FraseEntidade buscarFrasePorId(@PathParam("id") Long idFrase) {
 		FraseEntidade fraseEncontrada = service.getById(idFrase);
@@ -55,13 +66,14 @@ public class FraseResource {
 	}
 	
 	@GET
-	@Path("/{idAutor:[0-9][0-9]*}")
-	public FraseEntidade buscarFrasePorAutorId(@PathParam("id") Long idAutor) {
-		FraseEntidade fraseEncontrada = service.getPhrasesByAuthorId(idAutor);
-		if(fraseEncontrada != null) 
-			return fraseEncontrada;
+	@Path("/autor/{id:[0-9][0-9]*}")
+	public List<FraseEntidade> buscarFrasePorAutorId(@PathParam("id") Long idAutor) {
+		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorId(idAutor);
 		
-		throw new WebApplicationException(Status.NOT_FOUND);
+		if(frasesEcontradas == null) 
+			LOGGER.info("Frases nao encontradas do seguinte id autor {}", idAutor);
+			
+		return frasesEcontradas;
 	}
 
 	@DELETE

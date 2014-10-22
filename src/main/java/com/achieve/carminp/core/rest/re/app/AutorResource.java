@@ -74,7 +74,7 @@ public class AutorResource {
 	@Path("/{nome}")
 	public List<AutorEntidade> buscarAutorPorNome(@PathParam("nome") String nomeAutor) {
 		Map<String, Object> field = new HashMap<String, Object>();
-		field.put(nomeAutor, "autor_nome");
+		field.put("nome", "like '%" + nomeAutor + "%'");
 		
 		List<AutorEntidade> autoresEncontrados = service.findByFields(field, true, 0, null);
 		
