@@ -18,7 +18,7 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
 
 /**
  * Classe abstrata que implementa <code>IGenericDAO</code> e implementa as
- * regras de acesso ao <b>DB</b>, utilizando a API do JTA, JPA, CDI e Reflections.
+ * regras de acesso ao <b>DB</b>, utilizando a API JPA e Reflections.
  * 
  * @author guilherme.magalhaes
  * @since 09/2014
@@ -65,12 +65,15 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 	 */
 	@Override
 	public T getById(Object id) throws EntityNotFoundException {
-		T entity = em.getReference(this.getClassT(), id);
+		T entity = null;
 		
-		if (entity == null)
-			throw new EntityNotFoundException();
-		else
-			return entity;
+		try {
+			entity = em.find(this.getClassT(), id);
+		} catch (EntityNotFoundException e) {
+			LOGGER.error("Entidade nao encontrada no db {}", this.getClassT().getName(), e);
+		}
+		
+		return entity;
 	}
 	
 	/**
