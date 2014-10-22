@@ -61,7 +61,7 @@ public class AutorResource {
 	}
 	
 	@GET
-	@Path("/{id}")
+	@Path("/{id:[0-9][0-9]*}")
 	public AutorEntidade buscarAutorPorId(@PathParam("id") Long idAutor) {
 		AutorEntidade autorEncontrado = service.getById(idAutor);
 		if (autorEncontrado == null)
@@ -74,7 +74,7 @@ public class AutorResource {
 	@Path("/{nome}")
 	public List<AutorEntidade> buscarAutorPorNome(@PathParam("nome") String nomeAutor) {
 		Map<String, Object> field = new HashMap<String, Object>();
-		field.put("nome", "like '%" + nomeAutor + "%'");
+		field.put("nome", nomeAutor);
 		
 		List<AutorEntidade> autoresEncontrados = service.findByFields(field, true, 0, null);
 		
@@ -89,7 +89,7 @@ public class AutorResource {
 	}
 	
 	@DELETE
-	@Path("/{id}")
+	@Path("/{id:[0-9][0-9]*}")
 	public void removerAutor(@PathParam("id") Long idAutor) {
 		if (idAutor != null) {
 			LOGGER.info("Removendo autor com id {}", idAutor);
