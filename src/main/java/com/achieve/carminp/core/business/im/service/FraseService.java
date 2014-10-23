@@ -31,7 +31,7 @@ public class FraseService extends GenericDAO<FraseEntidade> implements
 	public List<FraseEntidade> getPhrasesByAuthorId(Long id) {
 		EasyCriteria<FraseEntidade> easyCriteria = EasyCriteriaFactory.createQueryCriteria(em, FraseEntidade.class);
 		easyCriteria.innerJoin("autor");
-		easyCriteria.andEquals("id", id);
+		easyCriteria.andEquals("autor.id", id);
 		List<FraseEntidade> fraseEntidade = easyCriteria.getResultList();
 		
 		return fraseEntidade;
