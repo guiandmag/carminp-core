@@ -47,11 +47,11 @@ public class AutorResource {
 	IAutorService service;
 
 	@POST
-	public Response criarAutor(@Valid AutorEntidade autor, @Context HttpServletRequest req) {
+	public Response criarAutor(@Valid final AutorEntidade autor, @Context HttpServletRequest req) {
 		try {
 			service.save(autor);
 		} catch (Exception e) {
-			throw new WebApplicationException(Status.NOT_FOUND);
+			throw new WebApplicationException(Status.EXPECTATION_FAILED);
 		}
 		
 		URI uri = UriBuilder.fromPath("autor/{nome}").build(
@@ -62,35 +62,42 @@ public class AutorResource {
 	
 	@GET
 	@Path("/{id:[0-9][0-9]*}")
-	public AutorEntidade buscarAutorPorId(@PathParam("id") Long idAutor) {
+	public Response buscarAutorPorId(@PathParam("id")final Long idAutor) {
 		AutorEntidade autorEncontrado = service.getById(idAutor);
-		if (autorEncontrado == null)
+		if (autorEncontrado == null) {
 			LOGGER.debug("Autor com o id {}, nao encontrado", idAutor);
+			return Response.status(Status.NOT_FOUND).build();
+		}
 			
-		return autorEncontrado;
+		return Response.ok(autorEncontrado).build();
 	}
 	
 	@GET
 	@Path("/{nome}")
-	public List<AutorEntidade> buscarAutorPorNome(@PathParam("nome") String nomeAutor) {
+	public Response buscarAutorPorNome(@PathParam("nome")final String nomeAutor) {
 		Map<String, Object> field = new HashMap<String, Object>();
 		field.put("nome", nomeAutor);
 		
 		List<AutorEntidade> autoresEncontrados = service.findByFields(field, true, 0, null);
+		if(autoresEncontrados == null) 
+			return Response.status(Status.NOT_FOUND).build();
 		
-		return autoresEncontrados;
+		return Response.ok(autoresEncontrados).build();
 	}
 	
 	@GET
-	public List<AutorEntidade> buscarTodosAutores() {
+	public Response buscarTodosAutores() {
 		List<AutorEntidade> autoresEncontrados = service.findAll();
+		if(autoresEncontrados == null) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
 		
-		return autoresEncontrados;
+		return Response.ok(autoresEncontrados).build();
 	}
 	
 	@DELETE
 	@Path("/{id:[0-9][0-9]*}")
-	public void removerAutor(@PathParam("id") Long idAutor) {
+	public void removerAutor(@PathParam("id")final Long idAutor) {
 		if (idAutor != null) {
 			LOGGER.info("Removendo autor com id {}", idAutor);
 			service.delete(idAutor);

@@ -9,8 +9,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.slf4j.Logger;
@@ -38,42 +38,52 @@ public class FraseResource {
 	IFraseService service;
 
 	@GET
-	public List<FraseEntidade> buscarTodasFrases() {
+	public Response buscarTodasFrases() {
 		List<FraseEntidade> frasesEcontradas = service.findAll();
+		if(frasesEcontradas == null) {
+			LOGGER.info("Frases nao encontradas");
+			return Response.status(Status.NOT_FOUND).build();
+		}
 		
-		return frasesEcontradas;
+		return Response.ok(frasesEcontradas).build();
 	}
 	
 	@GET
 	@Path("/autor/{nome}")
-	public List<FraseEntidade> buscarFrasesPorAutorNome(@PathParam("nome") String nomeAutor) {
+	public Response buscarFrasesPorAutorNome(@PathParam("nome")final String nomeAutor) {
 		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorName(nomeAutor);
 		
-		if(frasesEcontradas == null) 
+		if(frasesEcontradas == null) {
 			LOGGER.info("Frases nao encontradas do seguinte autor {}", nomeAutor);
+			return Response.status(Status.NOT_FOUND).build();
+		}
 		
-		return frasesEcontradas;
+		return Response.ok(frasesEcontradas).build();
 	}
 	
 	@GET
 	@Path("/{id:[0-9][0-9]*}")
-	public FraseEntidade buscarFrasePorId(@PathParam("id") Long idFrase) {
+	public Response buscarFrasePorId(@PathParam("id")final Long idFrase) {
 		FraseEntidade fraseEncontrada = service.getById(idFrase);
-		if(fraseEncontrada != null)
-			return fraseEncontrada;
+		if(fraseEncontrada == null) {
+			LOGGER.info("Frases nao encontradas com seguinte id {}", idFrase);
+			return Response.status(Status.NOT_FOUND).build();
+		}
 		
-		throw new WebApplicationException(Status.NOT_FOUND);
+		return Response.ok(fraseEncontrada).build();
 	}
 	
 	@GET
 	@Path("/autor/{id:[0-9][0-9]*}")
-	public List<FraseEntidade> buscarFrasePorAutorId(@PathParam("id") Long idAutor) {
+	public Response buscarFrasePorAutorId(@PathParam("id")final Long idAutor) {
 		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorId(idAutor);
 		
-		if(frasesEcontradas == null) 
+		if(frasesEcontradas == null) {
 			LOGGER.info("Frases nao encontradas do seguinte id autor {}", idAutor);
+			return Response.status(Status.NOT_FOUND).build();
+		}
 			
-		return frasesEcontradas;
+		return Response.ok(frasesEcontradas).build();
 	}
 
 	@DELETE
