@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datasources xmlns="http://www.jboss.org/ironjacamar/schema">
 
-	<datasource jta="false" jndi-name="java:jboss/datasources/carminp"
+	<datasource jta="true" jndi-name="java:jboss/datasources/carminp"
 		pool-name="PostgreSQL" enabled="true" use-ccm="false">
 		<connection-url>jdbc:postgresql://localhost:5432/carminp</connection-url>
 		<driver-class>org.postgresql.Driver</driver-class>
