@@ -1,16 +1,23 @@
 package com.achieve.carminp.core.rest.re.app;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.Status;
 
 import org.slf4j.Logger;
@@ -36,6 +43,21 @@ public class FraseResource {
 	
 	@Inject
 	IFraseService service;
+	
+	@POST
+	public Response criaFrase(@Valid final FraseEntidade frase, @Context HttpServletRequest req) {
+		try {
+			service.save(frase);
+		} catch (Exception e) {
+			LOGGER.error("Erro encontrado {}", e);
+			throw new WebApplicationException(Status.EXPECTATION_FAILED);
+		}
+		
+		URI uri = UriBuilder.fromPath("frase/{frase}").build(
+				frase.getFrase());
+		
+		return Response.created(uri).entity(frase).build();
+	}
 
 	@GET
 	public Response buscarTodasFrases() {
