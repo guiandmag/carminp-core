@@ -33,7 +33,7 @@ public class UsuarioEntidade implements IEntity<Long> {
 	private Long id;
 	
 	@Column(name = "usuario_nome", nullable = false, length = 150)
-	@XmlElement
+	@XmlElement(name = "nome")
 	private String nomeUsuario;
 	
 	@Column(name = "usuario_email", nullable = false, length = 100)
