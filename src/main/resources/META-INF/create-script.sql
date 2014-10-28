@@ -4,6 +4,38 @@
 -- Data : 17/10/2014
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+------------------------------------------------------------------------------- TABELA: TBL_USUARIO --------------------------------------------------------------------------
+
+CREATE TABLE TBL_USUARIO
+(
+  usuario_id BIGINT NOT NULL,
+  usuario_nome CHARACTER VARYING(150) NOT NULL,
+  usuario_email CHARACTER VARYING(100) NOT NULL,
+  usuario_senha CHARACTER VARYING(50) NOT NULL,
+  CONSTRAINT usuario_pk PRIMARY KEY (usuario_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE TBL_USUARIO
+  OWNER TO postgres;
+
+COMMENT ON TABLE public.tbl_usuario IS 'Tabela para guardar os dados do usuario';
+COMMENT ON COLUMN tbl_usuario.usuario_id IS 'Id do usuario a ser gerado pelo DB';
+COMMENT ON COLUMN tbl_usuario.usuario_nome IS 'Nome do usario';
+COMMENT ON COLUMN tbl_usuario.usuario_email IS 'Email do usuario';
+COMMENT ON COLUMN tbl_usuario.usuario_senha IS 'Senha do usuario';
+
+------------------------------------------------------------------------- INDEX: uk_usuario__usuario_email ------------------------------------------------------------------------
+
+CREATE INDEX uk_usuario__usuario_email
+  ON TBL_USUARIO
+  USING btree
+  (usuario_email COLLATE pg_catalog."default");
+  
+COMMENT ON INDEX uk_usuario__usuario_email IS 'Email do usuario eh unique no DB';
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------- TABELA: TBL_AUTOR ----------------------------------------------------------------------------
 
 CREATE TABLE TBL_AUTOR
@@ -57,6 +89,20 @@ COMMENT ON COLUMN tbl_frase.autor_id IS 'Chave que ira fazer FK para a tabela tb
   
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------- SEQUENCE: USUARIO_SEQUENCIA -----------------------------------------------------------------------
+
+CREATE SEQUENCE USUARIO_SEQUENCIA
+  INCREMENT 50
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE USUARIO_SEQUENCIA
+  OWNER TO postgres;
+  
+COMMENT ON SEQUENCE USUARIO_SEQUENCIA IS 'Gerar id para o PK da tabela tbl_usuario';
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------- SEQUENCE: AUTOR_SEQUENCIA -------------------------------------------------------------------------
 
 CREATE SEQUENCE AUTOR_SEQUENCIA
