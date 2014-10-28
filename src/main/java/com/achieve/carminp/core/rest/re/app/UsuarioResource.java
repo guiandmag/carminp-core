@@ -1,4 +1,4 @@
-package com.achieve.carminp.core.model.im.rest;
+package com.achieve.carminp.core.rest.re.app;
 
 import java.net.URI;
 import java.util.List;
