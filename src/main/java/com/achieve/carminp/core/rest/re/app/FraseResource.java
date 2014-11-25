@@ -110,12 +110,12 @@ public class FraseResource {
 
 	@DELETE
 	@Path("/{id:[0-9][0-9]*}")
-	public void removeFrase(@PathParam("id") final Long idFrase) {
-		if(idFrase != null) {
-			LOGGER.info("Removendo frase com o id {}", idFrase);
+	public Response removeFrase(@PathParam("id") final Long idFrase) {
+		if(idFrase != null) 
 			service.delete(idFrase);
-		} else {
+		else 
 			LOGGER.info("Frase com id {} não existe e, portanto, nada foi excluído", idFrase);
-		}
+		
+		return Response.status(Status.OK).build();
 	}
 }

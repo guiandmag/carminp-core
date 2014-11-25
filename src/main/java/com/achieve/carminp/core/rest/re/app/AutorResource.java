@@ -88,21 +88,20 @@ public class AutorResource {
 	@GET
 	public Response buscarTodosAutores() {
 		List<AutorEntidade> autoresEncontrados = service.findAll();
-		if(autoresEncontrados == null) {
+		if(autoresEncontrados == null) 
 			return Response.status(Status.NOT_FOUND).build();
-		}
 		
 		return Response.ok(autoresEncontrados).build();
 	}
 	
 	@DELETE
 	@Path("/{id:[0-9][0-9]*}")
-	public void removerAutor(@PathParam("id")final Long idAutor) {
-		if (idAutor != null) {
-			LOGGER.info("Removendo autor com id {}", idAutor);
+	public Response removerAutor(@PathParam("id")final Long idAutor) {
+		if (idAutor != null) 
 			service.delete(idAutor);
-		} else {
+		else 
 			LOGGER.info("Autor com id {} não existe e, portanto, nada foi excluído", idAutor);
-		}
+		
+		return Response.status(Status.OK).build();
 	}
 }

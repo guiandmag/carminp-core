@@ -75,22 +75,22 @@ public class UsuarioResource {
 	@GET
 	public Response buscarTodosUsuarios() {
 		final List<UsuarioEntidade> usuarioEncontrados = service.findAll();
-		if(usuarioEncontrados == null) {
+		
+		if(usuarioEncontrados == null) 
 			return Response.status(Status.NOT_FOUND).build();
-		}
 		
 		return Response.ok(usuarioEncontrados).build();
 	}
 
 	@DELETE
 	@Path("/{id:[0-9][0-9]*}")
-	public void deleteById(@PathParam("id") final Long idUsuario) {
-		if (idUsuario != null) {
-			LOGGER.info("Removendo usuario com id {}", idUsuario);
+	public Response deleteById(@PathParam("id") final Long idUsuario) {
+		if (idUsuario != null) 
 			service.delete(idUsuario);
-		} else {
+		else 
 			LOGGER.info("Usuario com id {} não existe e, portanto, nada foi excluído", idUsuario);
-		}
+		
+		return Response.status(Status.OK).build();
 	}
 
 }
