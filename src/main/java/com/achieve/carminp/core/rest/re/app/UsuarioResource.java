@@ -1,10 +1,13 @@
 package com.achieve.carminp.core.rest.re.app;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -25,8 +28,9 @@ import com.achieve.carminp.core.rest.re.in.IUsuarioResource;
  * @author guilherme.magalhaes
  * @since 10/2014
  * @version 1.1
- * @see IGenericRest
+ * @see IGenericRest, {@link IUsuarioResource}
  */
+@Path("/usuario")
 public class UsuarioResource implements IGenericRest<UsuarioEntidade>,
 		IUsuarioResource{
 
@@ -90,6 +94,22 @@ public class UsuarioResource implements IGenericRest<UsuarioEntidade>,
 			LOGGER.info("Usuario com id {} não existe e, portanto, nada foi excluído", id);
 		
 		return Response.status(Status.OK).build();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarUsuarioPorNome(String nome) {
+		Map<String, Object> field = new HashMap<String, Object>();
+		field.put("nome", nome);
+		
+		List<UsuarioEntidade> usuariosEncontrados = service.findByFields(field, true, 0, null);
+		
+		if(usuariosEncontrados == null) 
+			return Response.status(Status.NOT_FOUND).build();
+		
+		return Response.ok(usuariosEncontrados).build();
 	}
 
 }

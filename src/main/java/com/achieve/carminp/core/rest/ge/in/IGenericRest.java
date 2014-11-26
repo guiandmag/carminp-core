@@ -42,7 +42,7 @@ public interface IGenericRest<T extends IEntity<?>> {
 	 * @return
 	 */
 	@POST
-	public Response criar(@Valid final T entity, @Context HttpServletRequest req);
+	Response criar(@Valid T entity, @Context HttpServletRequest req);
 	
 	/**
 	 * Metodo para retornar a entidade pelo seu <code>id</code> fornecido
@@ -53,7 +53,7 @@ public interface IGenericRest<T extends IEntity<?>> {
 	 */
 	@GET
 	@Path("/{id:[0-9][0-9]*}")
-	public Response buscarPorId(@PathParam("id")final Long id);
+	Response buscarPorId(@PathParam("id") Long id);
 
 	/**
 	 * Metodo para retornar todas as entidades do DB
@@ -62,7 +62,7 @@ public interface IGenericRest<T extends IEntity<?>> {
 	 * @return
 	 */
 	@GET
-	public Response buscarTodos();
+	Response buscarTodos();
 	
 	/**
 	 * Metodo para remover a entidade pelo seu <code>id</code> fornecido
@@ -73,6 +73,6 @@ public interface IGenericRest<T extends IEntity<?>> {
 	 */
 	@DELETE
 	@Path("/{id:[0-9][0-9]*}")
-	public Response remover(@PathParam("id")final Long id);
+	Response remover(@PathParam("id") Long id);
 	
 }

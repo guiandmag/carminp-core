@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
@@ -25,8 +26,9 @@ import com.achieve.carminp.core.rest.re.in.IFraseResource;
  * @author guilherme.magalhaes
  * @since 09/2014
  * @version 1.1
- * @see IGenericRest
+ * @see IGenericRest, {@link IFraseResource}
  */
+@Path("/frase")
 public class FraseResource implements IGenericRest<FraseEntidade>,
 		IFraseResource{
 	

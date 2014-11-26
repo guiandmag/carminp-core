@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
@@ -28,8 +28,9 @@ import com.achieve.carminp.core.rest.re.in.IAutorResource;
  * @author guilherme.magalhaes
  * @since 09/2014
  * @version 1.1
- * @see IGenericRest
+ * @see IGenericRest, {@link IAutorResource}
  */
+@Path("/autor")
 public class AutorResource implements IGenericRest<AutorEntidade>, 
 		IAutorResource{
 	
@@ -101,7 +102,7 @@ public class AutorResource implements IGenericRest<AutorEntidade>,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Response buscarAutorPorNome(@PathParam("nome")final String nomeAutor) {
+	public Response buscarAutorPorNome(final String nomeAutor) {
 		Map<String, Object> field = new HashMap<String, Object>();
 		field.put("nome", nomeAutor);
 		

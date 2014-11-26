@@ -1,8 +1,11 @@
 package com.achieve.carminp.core.rest.re.in;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -14,7 +17,8 @@ import javax.ws.rs.core.Response;
  * @since 11/2014
  * @version 1.1
  */
-@Path("/frase")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public interface IFraseResource {
 	
 	/**
@@ -26,7 +30,7 @@ public interface IFraseResource {
 	 */
 	@GET
 	@Path("/autor/{nome}")
-	public Response buscarFrasesPorAutorNome(@PathParam("nome")final String nomeAutor);
+	Response buscarFrasesPorAutorNome(@PathParam("nome") String nomeAutor);
 	
 	/**
 	 * Metodo para recuperar as frases pelo
@@ -37,6 +41,6 @@ public interface IFraseResource {
 	 */
 	@GET
 	@Path("/autor/{id:[0-9][0-9]*}")
-	public Response buscarFrasePorAutorId(@PathParam("id")final Long idAutor);
+	Response buscarFrasePorAutorId(@PathParam("id") Long idAutor);
 
 }
