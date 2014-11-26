@@ -3,20 +3,9 @@ package com.achieve.carminp.core.rest.re.app;
 import java.net.URI;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
@@ -26,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import com.achieve.carminp.core.business.in.service.IUsuarioService;
 import com.achieve.carminp.core.model.im.entidade.UsuarioEntidade;
+import com.achieve.carminp.core.rest.ge.in.IGenericRest;
+import com.achieve.carminp.core.rest.re.in.IUsuarioResource;
 
 /**
  * Define o servico <b>REST</b> em que representara
@@ -33,24 +24,26 @@ import com.achieve.carminp.core.model.im.entidade.UsuarioEntidade;
  * 
  * @author guilherme.magalhaes
  * @since 10/2014
- * @version 1.0
+ * @version 1.1
+ * @see IGenericRest
  */
-@RequestScoped
-@Path("/usuario")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public class UsuarioResource {
+public class UsuarioResource implements IGenericRest<UsuarioEntidade>,
+		IUsuarioResource{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioEntidade.class.getName());
 	
 	@Inject
 	IUsuarioService service;
 	
-	@POST
-	public Response criarUsuario(@Valid final UsuarioEntidade usuario, @Context HttpServletResponse res) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response criar(UsuarioEntidade usuario, HttpServletRequest req) {
 		try {
 			service.save(usuario);
 		} catch (Exception e) {
+			LOGGER.error("Erro encontrado {}", e);
 			throw new WebApplicationException(Status.EXPECTATION_FAILED);
 		}
 		
@@ -60,20 +53,24 @@ public class UsuarioResource {
 		return Response.created(uri).entity(usuario).build();
 	}
 
-	@GET
-	@Path("/{id:[0-9][0-9]*}")
-	public Response buscarAutorPorId(@PathParam("id") final Long idUsuario) {
-		UsuarioEntidade usuarioEncontrado = service.getById(idUsuario);
-		if (usuarioEncontrado == null) {
-			LOGGER.debug("Usuario com o id {}, nao encontrado", idUsuario);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarPorId(Long id) {
+		UsuarioEntidade usuarioEncontrado = service.getById(id);
+		
+		if (usuarioEncontrado == null)
 			return Response.status(Status.NOT_FOUND).build();
-		}
 		
 		return Response.ok(usuarioEncontrado).build();
 	}
 
-	@GET
-	public Response buscarTodosUsuarios() {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarTodos() {
 		final List<UsuarioEntidade> usuarioEncontrados = service.findAll();
 		
 		if(usuarioEncontrados == null) 
@@ -82,13 +79,15 @@ public class UsuarioResource {
 		return Response.ok(usuarioEncontrados).build();
 	}
 
-	@DELETE
-	@Path("/{id:[0-9][0-9]*}")
-	public Response deleteById(@PathParam("id") final Long idUsuario) {
-		if (idUsuario != null) 
-			service.delete(idUsuario);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response remover(Long id) {
+		if (id != null) 
+			service.delete(id);
 		else 
-			LOGGER.info("Usuario com id {} não existe e, portanto, nada foi excluído", idUsuario);
+			LOGGER.info("Usuario com id {} não existe e, portanto, nada foi excluído", id);
 		
 		return Response.status(Status.OK).build();
 	}

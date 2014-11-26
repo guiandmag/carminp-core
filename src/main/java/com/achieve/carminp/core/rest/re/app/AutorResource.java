@@ -7,17 +7,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -27,6 +18,8 @@ import org.slf4j.LoggerFactory;
 
 import com.achieve.carminp.core.business.in.service.IAutorService;
 import com.achieve.carminp.core.model.im.entidade.AutorEntidade;
+import com.achieve.carminp.core.rest.ge.in.IGenericRest;
+import com.achieve.carminp.core.rest.re.in.IAutorResource;
 
 /**
  * Define o servico <b>REST</b> em que representara
@@ -34,23 +27,26 @@ import com.achieve.carminp.core.model.im.entidade.AutorEntidade;
  * 
  * @author guilherme.magalhaes
  * @since 09/2014
- * @version 1.0
+ * @version 1.1
+ * @see IGenericRest
  */
-@Path("/autor")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public class AutorResource {
+public class AutorResource implements IGenericRest<AutorEntidade>, 
+		IAutorResource{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AutorResource.class.getName());
 	
 	@Inject
 	IAutorService service;
 
-	@POST
-	public Response criarAutor(@Valid final AutorEntidade autor, @Context HttpServletRequest req) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response criar(AutorEntidade autor, HttpServletRequest req) {
 		try {
 			service.save(autor);
 		} catch (Exception e) {
+			LOGGER.error("Erro encontrado {}", e);
 			throw new WebApplicationException(Status.EXPECTATION_FAILED);
 		}
 		
@@ -60,48 +56,61 @@ public class AutorResource {
 		return Response.created(uri).entity(autor).build();
 	}
 	
-	@GET
-	@Path("/{id:[0-9][0-9]*}")
-	public Response buscarAutorPorId(@PathParam("id")final Long idAutor) {
-		AutorEntidade autorEncontrado = service.getById(idAutor);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarPorId(Long id) {
+		AutorEntidade autorEncontrado = service.getById(id);
+		
 		if (autorEncontrado == null) {
-			LOGGER.debug("Autor com o id {}, nao encontrado", idAutor);
+			LOGGER.debug("Autor com o id {}, nao encontrado", id);
 			return Response.status(Status.NOT_FOUND).build();
 		}
 			
 		return Response.ok(autorEncontrado).build();
 	}
 	
-	@GET
-	@Path("/{nome}")
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarTodos() {
+		List<AutorEntidade> autoresEncontrados = service.findAll();
+		
+		if(autoresEncontrados == null) 
+			return Response.status(Status.NOT_FOUND).build();
+		
+		return Response.ok(autoresEncontrados).build();	
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response remover(Long id) {
+		if (id != null) 
+			service.delete(id);
+		else 
+			LOGGER.info("Autor com id {} não existe e, portanto, nada foi excluído", id);
+		
+		return Response.status(Status.OK).build();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Response buscarAutorPorNome(@PathParam("nome")final String nomeAutor) {
 		Map<String, Object> field = new HashMap<String, Object>();
 		field.put("nome", nomeAutor);
 		
 		List<AutorEntidade> autoresEncontrados = service.findByFields(field, true, 0, null);
+		
 		if(autoresEncontrados == null) 
 			return Response.status(Status.NOT_FOUND).build();
 		
 		return Response.ok(autoresEncontrados).build();
 	}
 	
-	@GET
-	public Response buscarTodosAutores() {
-		List<AutorEntidade> autoresEncontrados = service.findAll();
-		if(autoresEncontrados == null) 
-			return Response.status(Status.NOT_FOUND).build();
-		
-		return Response.ok(autoresEncontrados).build();
-	}
-	
-	@DELETE
-	@Path("/{id:[0-9][0-9]*}")
-	public Response removerAutor(@PathParam("id")final Long idAutor) {
-		if (idAutor != null) 
-			service.delete(idAutor);
-		else 
-			LOGGER.info("Autor com id {} não existe e, portanto, nada foi excluído", idAutor);
-		
-		return Response.status(Status.OK).build();
-	}
 }

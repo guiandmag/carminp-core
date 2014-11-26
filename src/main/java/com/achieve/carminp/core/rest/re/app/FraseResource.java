@@ -5,17 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -25,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import com.achieve.carminp.core.business.in.service.IFraseService;
 import com.achieve.carminp.core.model.im.entidade.FraseEntidade;
+import com.achieve.carminp.core.rest.ge.in.IGenericRest;
+import com.achieve.carminp.core.rest.re.in.IFraseResource;
 
 /**
  * Define o servico <b>REST</b> em que representara
@@ -32,20 +24,22 @@ import com.achieve.carminp.core.model.im.entidade.FraseEntidade;
  * 
  * @author guilherme.magalhaes
  * @since 09/2014
- * @version 1.0
+ * @version 1.1
+ * @see IGenericRest
  */
-@Path("/frase")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public class FraseResource {
+public class FraseResource implements IGenericRest<FraseEntidade>,
+		IFraseResource{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FraseResource.class.getName());
 	
 	@Inject
 	IFraseService service;
 	
-	@POST
-	public Response criaFrase(@Valid final FraseEntidade frase, @Context HttpServletRequest req) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response criar(final FraseEntidade frase, HttpServletRequest req) {
 		try {
 			service.save(frase);
 		} catch (Exception e) {
@@ -54,25 +48,54 @@ public class FraseResource {
 		}
 		
 		URI uri = UriBuilder.fromPath("frase/{frase}").build(
-				frase.getFrase());
+					frase.getFrase());
 		
 		return Response.created(uri).entity(frase).build();
 	}
-
-	@GET
-	public Response buscarTodasFrases() {
-		List<FraseEntidade> frasesEcontradas = service.findAll();
-		if(frasesEcontradas == null) {
-			LOGGER.info("Frases nao encontradas");
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarPorId(final Long id) {
+		FraseEntidade fraseEncontrada = service.getById(id);
+		
+		if(fraseEncontrada == null) 
 			return Response.status(Status.NOT_FOUND).build();
-		}
+		
+		return Response.ok(fraseEncontrada).build();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarTodos() {
+		List<FraseEntidade> frasesEcontradas = service.findAll();
+		if(frasesEcontradas == null)
+			return Response.status(Status.NOT_FOUND).build();
 		
 		return Response.ok(frasesEcontradas).build();
 	}
 	
-	@GET
-	@Path("/autor/{nome}")
-	public Response buscarFrasesPorAutorNome(@PathParam("nome")final String nomeAutor) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response remover(final Long id) {
+		if(id != null) 
+			service.delete(id);
+		else 
+			LOGGER.info("Frase com id {} não existe e, portanto, nada foi excluído", id);
+		
+		return Response.status(Status.OK).build();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarFrasesPorAutorNome(final String nomeAutor) {
 		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorName(nomeAutor);
 		
 		if(frasesEcontradas == null) {
@@ -83,21 +106,11 @@ public class FraseResource {
 		return Response.ok(frasesEcontradas).build();
 	}
 	
-	@GET
-	@Path("/{id:[0-9][0-9]*}")
-	public Response buscarFrasePorId(@PathParam("id")final Long idFrase) {
-		FraseEntidade fraseEncontrada = service.getById(idFrase);
-		if(fraseEncontrada == null) {
-			LOGGER.info("Frases nao encontradas com seguinte id {}", idFrase);
-			return Response.status(Status.NOT_FOUND).build();
-		}
-		
-		return Response.ok(fraseEncontrada).build();
-	}
-	
-	@GET
-	@Path("/autor/{id:[0-9][0-9]*}")
-	public Response buscarFrasePorAutorId(@PathParam("id")final Long idAutor) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarFrasePorAutorId(final Long idAutor) {
 		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorId(idAutor);
 		
 		if(frasesEcontradas == null) {
@@ -107,15 +120,5 @@ public class FraseResource {
 			
 		return Response.ok(frasesEcontradas).build();
 	}
-
-	@DELETE
-	@Path("/{id:[0-9][0-9]*}")
-	public Response removeFrase(@PathParam("id") final Long idFrase) {
-		if(idFrase != null) 
-			service.delete(idFrase);
-		else 
-			LOGGER.info("Frase com id {} não existe e, portanto, nada foi excluído", idFrase);
-		
-		return Response.status(Status.OK).build();
-	}
+	
 }

@@ -22,6 +22,10 @@ import com.uaihebert.model.EasyCriteria;
 public class AutorService extends GenericDAO<AutorEntidade> implements
 		IAutorService {
 
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<AutorEntidade> getAllAuthorOrderById() {
 		EasyCriteria<AutorEntidade> easyCriteria = EasyCriteriaFactory.createQueryCriteria(em, AutorEntidade.class);
