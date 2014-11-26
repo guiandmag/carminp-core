@@ -13,7 +13,7 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
  * Entidade para representar o usuario a ser salvo no DB.
  *
  * @author guilherme.magalhaes
- * @version 1.0
+ * @version 1.1
  * @see IEntity
  */
 @Entity
@@ -44,6 +44,10 @@ public class UsuarioEntidade implements IEntity<Long> {
 	@XmlElement
 	private String senha;
 	
+	@Column(name = "usuario_url_foto", length = 250)
+	@XmlElement
+	private String urlFoto;
+	
 	private static final long serialVersionUID = 1L;
 
 	public UsuarioEntidade() {
@@ -51,12 +55,13 @@ public class UsuarioEntidade implements IEntity<Long> {
 	}
 
 	public UsuarioEntidade(Long id, String nomeUsuario, String email,
-			String senha) {
+			String senha, String urlFoto) {
 		super();
 		this.id = id;
 		this.nomeUsuario = nomeUsuario;
 		this.email = email;
 		this.senha = senha;
+		this.urlFoto = urlFoto;
 	}
 
 	/**
@@ -92,6 +97,14 @@ public class UsuarioEntidade implements IEntity<Long> {
 		this.senha = senha;
 	}
 
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -101,6 +114,7 @@ public class UsuarioEntidade implements IEntity<Long> {
 		result = prime * result
 				+ ((nomeUsuario == null) ? 0 : nomeUsuario.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
+		result = prime * result + ((urlFoto == null) ? 0 : urlFoto.hashCode());
 		return result;
 	}
 
@@ -133,13 +147,19 @@ public class UsuarioEntidade implements IEntity<Long> {
 				return false;
 		} else if (!senha.equals(other.senha))
 			return false;
+		if (urlFoto == null) {
+			if (other.urlFoto != null)
+				return false;
+		} else if (!urlFoto.equals(other.urlFoto))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "UsuarioEntidade [id=" + id + ", nomeUsuario=" + nomeUsuario
-				+ ", email=" + email + ", senha=" + senha + "]";
+				+ ", email=" + email + ", senha=" + senha + ", urlFoto="
+				+ urlFoto + "]";
 	}
-   
+	
 }

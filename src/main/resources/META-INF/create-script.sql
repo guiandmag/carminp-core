@@ -12,6 +12,7 @@ CREATE TABLE TBL_USUARIO
   usuario_nome CHARACTER VARYING(150) NOT NULL,
   usuario_email CHARACTER VARYING(100) NOT NULL,
   usuario_senha CHARACTER VARYING(50) NOT NULL,
+  usuario_url_foto CHARACTER VARYING(250),
   CONSTRAINT usuario_pk PRIMARY KEY (usuario_id)
 )
 WITH (
@@ -25,6 +26,7 @@ COMMENT ON COLUMN tbl_usuario.usuario_id IS 'Id do usuario a ser gerado pelo DB'
 COMMENT ON COLUMN tbl_usuario.usuario_nome IS 'Nome do usario';
 COMMENT ON COLUMN tbl_usuario.usuario_email IS 'Email do usuario';
 COMMENT ON COLUMN tbl_usuario.usuario_senha IS 'Senha do usuario';
+COMMENT ON COLUMN tbl_usuario.usuario_url_foto IS 'Endereco de url onde esta alocado a foto do usuario';
 
 ------------------------------------------------------------------------- INDEX: uk_usuario__usuario_email ------------------------------------------------------------------------
 
