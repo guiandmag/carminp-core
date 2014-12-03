@@ -1,5 +1,6 @@
 package com.achieve.carminp.core.rest.re.in;
 
+import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -7,6 +8,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.achieve.carminp.core.model.im.entidade.AutorEntidade;
+import com.achieve.carminp.core.rest.ge.in.IGenericRest;
 
 /**
  * Interface para a apresentacao das regras a 
@@ -16,10 +20,13 @@ import javax.ws.rs.core.Response;
  * @author guilherme.magalhaes
  * @since 11/2014
  * @version 1.1
+ * @see IGenericRest
  */
+@RequestScoped
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface IAutorResource {
+@Path("/autor")
+public interface IAutorResource extends IGenericRest<AutorEntidade> {
 
 	/**
 	 * Metodo para recuperar o autor pelo seu 

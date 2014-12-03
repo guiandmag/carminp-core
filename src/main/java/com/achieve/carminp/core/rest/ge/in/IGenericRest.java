@@ -1,17 +1,15 @@
 package com.achieve.carminp.core.rest.ge.in;
 
-import javax.enterprise.context.RequestScoped;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.achieve.carminp.core.model.in.entidade.IEntity;
@@ -28,9 +26,6 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
  * @param <T>
  * @see IEntity
  */
-@RequestScoped
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
 public interface IGenericRest<T extends IEntity<?>> {
 	
 	/**
@@ -43,6 +38,17 @@ public interface IGenericRest<T extends IEntity<?>> {
 	 */
 	@POST
 	Response criar(@Valid T entity, @Context HttpServletRequest req);
+	
+	/**
+	 * Metodo para a atualizacao de entidade no sistema
+	 * com a interface <b>REST</b>.
+	 * 
+	 * @param entity
+	 * @param req
+	 * @return
+	 */
+	@PUT
+	Response atualizar(@Valid T entity, @Context HttpServletRequest req);
 	
 	/**
 	 * Metodo para retornar a entidade pelo seu <code>id</code> fornecido
@@ -63,6 +69,19 @@ public interface IGenericRest<T extends IEntity<?>> {
 	 */
 	@GET
 	Response buscarTodos();
+	
+	/**
+	 * Metodo para retornar todas as entidades do DB 
+	 * com as clausulas de paginacao
+	 * para a apresentacao pela camada <b>REST</b>
+	 * 
+	 * @param size
+	 * @param start
+	 * @return
+	 */
+	@GET
+	@Path("/pag")
+	Response buscarTodosComClausulas(@QueryParam("start") int size, @QueryParam("size") int start);
 	
 	/**
 	 * Metodo para remover a entidade pelo seu <code>id</code> fornecido

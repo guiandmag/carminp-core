@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -18,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import com.achieve.carminp.core.business.in.service.IUsuarioService;
 import com.achieve.carminp.core.model.im.entidade.UsuarioEntidade;
-import com.achieve.carminp.core.rest.ge.in.IGenericRest;
 import com.achieve.carminp.core.rest.re.in.IUsuarioResource;
 
 /**
@@ -28,11 +26,9 @@ import com.achieve.carminp.core.rest.re.in.IUsuarioResource;
  * @author guilherme.magalhaes
  * @since 10/2014
  * @version 1.1
- * @see IGenericRest, {@link IUsuarioResource}
+ * @see IUsuarioResource
  */
-@Path("/usuario")
-public class UsuarioResource implements IGenericRest<UsuarioEntidade>,
-		IUsuarioResource{
+public class UsuarioResource implements IUsuarioResource{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioEntidade.class.getName());
 	
@@ -43,7 +39,7 @@ public class UsuarioResource implements IGenericRest<UsuarioEntidade>,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Response criar(UsuarioEntidade usuario, HttpServletRequest req) {
+	public Response criar(final UsuarioEntidade usuario, HttpServletRequest req) {
 		try {
 			service.save(usuario);
 		} catch (Exception e) {
@@ -61,7 +57,17 @@ public class UsuarioResource implements IGenericRest<UsuarioEntidade>,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Response buscarPorId(Long id) {
+	public Response atualizar(final UsuarioEntidade usuario, HttpServletRequest req) {
+		service.update(usuario);
+		
+		return Response.status(Status.OK).build();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarPorId(final Long id) {
 		UsuarioEntidade usuarioEncontrado = service.getById(id);
 		
 		if (usuarioEncontrado == null)
@@ -82,16 +88,29 @@ public class UsuarioResource implements IGenericRest<UsuarioEntidade>,
 		
 		return Response.ok(usuarioEncontrados).build();
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarTodosComClausulas(final int start, final int size){
+		final List<UsuarioEntidade> usuarioEncontrados = service.findAllWithClauses(start, size);
+		
+		if(usuarioEncontrados == null) 
+			return Response.status(Status.NOT_FOUND).build();
+		
+		return Response.ok(usuarioEncontrados).build();
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Response remover(Long id) {
+	public Response remover(final Long id) {
 		if (id != null) 
 			service.delete(id);
 		else 
-			LOGGER.info("Usuario com id {} não existe e, portanto, nada foi excluído", id);
+			LOGGER.info("Id {} nulo, portanto, informe um valido", id);
 		
 		return Response.status(Status.OK).build();
 	}
@@ -100,7 +119,7 @@ public class UsuarioResource implements IGenericRest<UsuarioEntidade>,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Response buscarUsuarioPorNome(String nome) {
+	public Response buscarUsuarioPorNome(final String nome) {
 		Map<String, Object> field = new HashMap<String, Object>();
 		field.put("nome", nome);
 		

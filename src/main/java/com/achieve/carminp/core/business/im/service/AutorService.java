@@ -21,7 +21,6 @@ import com.uaihebert.model.EasyCriteria;
 @Stateless
 public class AutorService extends GenericDAO<AutorEntidade> implements
 		IAutorService {
-
 	
 	/**
 	 * {@inheritDoc}
