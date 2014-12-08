@@ -7,7 +7,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.NotSupportedException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
@@ -44,7 +45,7 @@ public class UsuarioResource implements IUsuarioResource{
 			service.save(usuario);
 		} catch (Exception e) {
 			LOGGER.error("Erro encontrado {}", e);
-			throw new WebApplicationException(Status.EXPECTATION_FAILED);
+			throw new NotSupportedException();
 		}
 		
 		URI uri = UriBuilder.fromPath("usuario/{nome}").build(
@@ -71,7 +72,7 @@ public class UsuarioResource implements IUsuarioResource{
 		UsuarioEntidade usuarioEncontrado = service.getById(id);
 		
 		if (usuarioEncontrado == null)
-			return Response.status(Status.NOT_FOUND).build();
+			throw new NotFoundException();
 		
 		return Response.ok(usuarioEncontrado).build();
 	}
@@ -84,7 +85,7 @@ public class UsuarioResource implements IUsuarioResource{
 		final List<UsuarioEntidade> usuarioEncontrados = service.findAll();
 		
 		if(usuarioEncontrados == null) 
-			return Response.status(Status.NOT_FOUND).build();
+			throw new NotFoundException();
 		
 		return Response.ok(usuarioEncontrados).build();
 	}
@@ -97,7 +98,7 @@ public class UsuarioResource implements IUsuarioResource{
 		final List<UsuarioEntidade> usuarioEncontrados = service.findAllWithClauses(start, size);
 		
 		if(usuarioEncontrados == null) 
-			return Response.status(Status.NOT_FOUND).build();
+			throw new NotFoundException();
 		
 		return Response.ok(usuarioEncontrados).build();
 	}
@@ -110,7 +111,7 @@ public class UsuarioResource implements IUsuarioResource{
 		if (id != null) 
 			service.delete(id);
 		else 
-			LOGGER.info("Id {} nulo, portanto, informe um valido", id);
+			throw new NotFoundException();
 		
 		return Response.status(Status.OK).build();
 	}
@@ -126,7 +127,7 @@ public class UsuarioResource implements IUsuarioResource{
 		List<UsuarioEntidade> usuariosEncontrados = service.findByFields(field, true, 0, null);
 		
 		if(usuariosEncontrados == null) 
-			return Response.status(Status.NOT_FOUND).build();
+			throw new NotFoundException();
 		
 		return Response.ok(usuariosEncontrados).build();
 	}

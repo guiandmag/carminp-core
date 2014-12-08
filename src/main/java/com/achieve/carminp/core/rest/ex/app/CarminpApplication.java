@@ -12,4 +12,6 @@ import javax.ws.rs.core.Application;
  * @version 1.0
  */
 @ApplicationPath("app")
-public class CarminpApplication extends Application {}
+public class CarminpApplication extends Application {
+	
+}

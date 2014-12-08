@@ -15,8 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "carminpError")
 public class CarminpError {
-	private String message;
-    private String stackTrace;
+	private final String message;
+    private final String stackTrace;
 	
     public CarminpError(final Exception e) {
     	this(e.getMessage(), e);
@@ -33,15 +33,9 @@ public class CarminpError {
     public String getMessage() {
         return message;
     }
-    public void setMessage(final String message) {
-        this.message = message;
-    }
+    
     public String getStackTrace() {
         return stackTrace;
-    }
-
-    public void setStackTrace(final String stackTrace) {
-        this.stackTrace = stackTrace;
     }
 
 	@Override

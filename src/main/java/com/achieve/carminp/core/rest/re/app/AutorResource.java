@@ -7,7 +7,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.NotSupportedException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -44,7 +45,7 @@ public class AutorResource implements IAutorResource{
 			service.save(autor);
 		} catch (Exception e) {
 			LOGGER.error("Erro encontrado {}", e);
-			throw new WebApplicationException(Status.EXPECTATION_FAILED);
+			throw new NotSupportedException();
 		}
 		
 		URI uri = UriBuilder.fromPath("autor/{nome}").build(
@@ -70,10 +71,8 @@ public class AutorResource implements IAutorResource{
 	public Response buscarPorId(final Long id) {
 		AutorEntidade autorEncontrado = service.getById(id);
 		
-		if (autorEncontrado == null) {
-			LOGGER.debug("Autor com o id {}, nao encontrado", id);
-			return Response.status(Status.NOT_FOUND).build();
-		}
+		if (autorEncontrado == null) 
+			throw new NotFoundException();
 			
 		return Response.ok(autorEncontrado).build();
 	}
@@ -86,7 +85,7 @@ public class AutorResource implements IAutorResource{
 		List<AutorEntidade> autoresEncontrados = service.findAll();
 		
 		if(autoresEncontrados == null) 
-			return Response.status(Status.NOT_FOUND).build();
+			throw new NotFoundException();
 		
 		return Response.ok(autoresEncontrados).build();	
 	}
@@ -99,7 +98,7 @@ public class AutorResource implements IAutorResource{
 		List<AutorEntidade> autoresEncontrados = service.findAllWithClauses(start, size);
 		
 		if(autoresEncontrados == null) 
-			return Response.status(Status.NOT_FOUND).build();
+			throw new NotFoundException();
 		
 		return Response.ok(autoresEncontrados).build();	
 	}
@@ -112,7 +111,7 @@ public class AutorResource implements IAutorResource{
 		if (id != null) 
 			service.delete(id);
 		else 
-			LOGGER.info("Id {} nulo, portanto, informe um valido", id);
+			throw new NotFoundException();
 		
 		return Response.status(Status.OK).build();
 	}
@@ -128,7 +127,7 @@ public class AutorResource implements IAutorResource{
 		List<AutorEntidade> autoresEncontrados = service.findByFields(field, true, 0, null);
 		
 		if(autoresEncontrados == null) 
-			return Response.status(Status.NOT_FOUND).build();
+			throw new NotFoundException();
 		
 		return Response.ok(autoresEncontrados).build();
 	}

@@ -4,6 +4,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -61,7 +62,7 @@ public interface IFraseResource {
 	 */
 	@GET
 	@Path("/pag")
-	Response buscarTodosComClausulas(@QueryParam("start") int start, @QueryParam("size") int size);
+	Response buscarTodosComClausulas(@QueryParam("start") int start, @DefaultValue("5") @QueryParam("size") int size);
 	
 	/**
 	 * Metodo para remover a frase pelo seu <code>id</code> fornecido

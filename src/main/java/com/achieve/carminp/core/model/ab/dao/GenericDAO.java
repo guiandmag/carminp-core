@@ -126,9 +126,9 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 				param = key.replace(".", ""); 
 				if (fields.get(key) instanceof String) {
 					String strfld = (String) fields.get(key); 
-					if (strfld.equals("is null")) 
+					if ("is null".equals(strfld)) 
 						strbld.append(connector + "t." + key + " is null"); 
-					else if (strfld.equals("is not null")) 
+					else if ("is not null".equals(strfld)) 
 						strbld.append(connector + "t." + key + " is not null"); 
 					else if (strfld.startsWith("like ")) 
 						strbld.append(connector + "lower(t." + key + ") like lower(:" + param + ")"); 
@@ -146,11 +146,8 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 			}
 		} 
 		
-		if (orderBy != null) {
-			if (!"".equals(orderBy.trim())) { 
-				strbld.append(" order by t." + orderBy); 
-			} 
-		} 
+		if (orderBy != null && !"".equals(orderBy.trim())) 
+			strbld.append(" order by t." + orderBy); 
 		
 		Query q = em.createQuery(strbld.toString()); 
 		
@@ -159,7 +156,7 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 			param = ""; 
 			
 			for (String key : fields.keySet()) { 
-				if (!fields.get(key).equals("is null") && !fields.get(key).equals("is not null")) { 
+				if (!"is null".equals(fields.get(key)) && !"is not null".equals(fields.get(key))) { 
 					param = key.replace(".", ""); 
 					
 					if (fields.get(key) instanceof String) { 

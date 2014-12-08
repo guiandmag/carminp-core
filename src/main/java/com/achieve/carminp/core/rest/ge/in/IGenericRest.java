@@ -3,6 +3,7 @@ package com.achieve.carminp.core.rest.ge.in;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -81,7 +82,7 @@ public interface IGenericRest<T extends IEntity<?>> {
 	 */
 	@GET
 	@Path("/pag")
-	Response buscarTodosComClausulas(@QueryParam("start") int size, @QueryParam("size") int start);
+	Response buscarTodosComClausulas(@QueryParam("start") int size, @DefaultValue("5") @QueryParam("size") int start);
 	
 	/**
 	 * Metodo para remover a entidade pelo seu <code>id</code> fornecido

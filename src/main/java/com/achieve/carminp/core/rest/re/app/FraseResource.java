@@ -4,11 +4,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.achieve.carminp.core.business.in.service.IFraseService;
 import com.achieve.carminp.core.model.im.entidade.FraseEntidade;
@@ -25,7 +23,6 @@ import com.achieve.carminp.core.rest.re.in.IFraseResource;
  */
 public class FraseResource implements IFraseResource{
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(FraseResource.class.getName());
 	
 	@Inject
 	IFraseService service;
@@ -46,8 +43,9 @@ public class FraseResource implements IFraseResource{
 	@Override
 	public Response buscarTodos() {
 		List<FraseEntidade> frasesEcontradas = service.findAll();
+		
 		if(frasesEcontradas == null)
-			return Response.status(Status.NOT_FOUND).build();
+			throw new NotFoundException();
 		
 		return Response.ok(frasesEcontradas).build();
 	}
@@ -58,8 +56,9 @@ public class FraseResource implements IFraseResource{
 	@Override
 	public Response buscarTodosComClausulas(final int start, final int size){
 		List<FraseEntidade> frasesEcontradas = service.findAllWithClauses(start, size);
+		
 		if(frasesEcontradas == null)
-			return Response.status(Status.NOT_FOUND).build();
+			throw new NotFoundException();
 		
 		return Response.ok(frasesEcontradas).build();
 	}
@@ -72,7 +71,7 @@ public class FraseResource implements IFraseResource{
 		if(id != null) 
 			service.delete(id);
 		else 
-			LOGGER.info("Id {} nulo, portanto, informe um valido", id);
+			throw new NotFoundException();
 		
 		return Response.status(Status.OK).build();
 	}
@@ -84,10 +83,8 @@ public class FraseResource implements IFraseResource{
 	public Response buscarFrasesPorAutorNome(final String nomeAutor) {
 		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorName(nomeAutor);
 		
-		if(frasesEcontradas == null) {
-			LOGGER.info("Frases nao encontradas do seguinte autor {}", nomeAutor);
-			return Response.status(Status.NOT_FOUND).build();
-		}
+		if(frasesEcontradas == null) 
+			throw new NotFoundException();
 		
 		return Response.ok(frasesEcontradas).build();
 	}
@@ -99,10 +96,8 @@ public class FraseResource implements IFraseResource{
 	public Response buscarFrasePorAutorId(final Long idAutor) {
 		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorId(idAutor);
 		
-		if(frasesEcontradas == null) {
-			LOGGER.info("Frases nao encontradas do seguinte id autor {}", idAutor);
-			return Response.status(Status.NOT_FOUND).build();
-		}
+		if(frasesEcontradas == null) 
+			throw new NotFoundException();
 			
 		return Response.ok(frasesEcontradas).build();
 	}
