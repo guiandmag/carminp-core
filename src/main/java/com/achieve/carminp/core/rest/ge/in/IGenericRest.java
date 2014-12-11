@@ -3,13 +3,11 @@ package com.achieve.carminp.core.rest.ge.in;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
@@ -70,19 +68,6 @@ public interface IGenericRest<T extends IEntity<?>> {
 	 */
 	@GET
 	Response buscarTodos();
-	
-	/**
-	 * Metodo para retornar todas as entidades do DB 
-	 * com as clausulas de paginacao
-	 * para a apresentacao pela camada <b>REST</b>
-	 * 
-	 * @param size
-	 * @param start
-	 * @return
-	 */
-	@GET
-	@Path("/pag")
-	Response buscarTodosComClausulas(@QueryParam("start") int size, @DefaultValue("5") @QueryParam("size") int start);
 	
 	/**
 	 * Metodo para remover a entidade pelo seu <code>id</code> fornecido

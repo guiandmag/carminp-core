@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
  * Entidade para representar o autor da frase a ser salva.
  *
  * @author guilherme.magalhaes
- * @version 1.0
+ * @version 2.0
  * @see IEntity
  */
 @Entity
@@ -35,15 +36,15 @@ public class AutorEntidade implements IEntity<Long> {
 	   
 	@Id
 	@GeneratedValue(generator = AUTOR_SEQUENCIA, strategy = GenerationType.SEQUENCE)
-	@Column(name = "autor_id", updatable = false, unique = true, nullable = false)
-	@XmlElement
+	@Column(name = "autor_id")
+	@XmlAttribute
 	private Long id;
 	
 	@Column(name = "autor_nome", nullable = false, length = 50)
 	@XmlElement
 	private String nome;
 	
-	@OneToMany(mappedBy = "autor", orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "autor", orphanRemoval = true)
 	@JsonManagedReference
 	@XmlElementWrapper
 	private List<FraseEntidade> frases = new LinkedList<FraseEntidade>();

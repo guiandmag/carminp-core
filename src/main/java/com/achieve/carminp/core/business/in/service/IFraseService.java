@@ -20,6 +20,15 @@ import com.achieve.carminp.core.model.in.dao.IGenericDAO;
 public interface IFraseService extends IGenericDAO<FraseEntidade> {
 
 	/**
+	 * Metodo pra recuperar tudo nas entidades no <b>DB</b> com as clausulas <code>OFFSET<> LIMIT<></code>.
+	 * 
+	 * @param offset
+	 * @param limit
+	 * @return
+	 */
+	List<FraseEntidade> getPhrasesWithClauses(int offset, int limit);
+	
+	/**
 	 * Metodo para recuperar as frases pelo id do autor desejado.
 	 * 
 	 * @param id
@@ -35,4 +44,5 @@ public interface IFraseService extends IGenericDAO<FraseEntidade> {
 	 */
 	List<FraseEntidade> getPhrasesByAuthorName(String name);
 	
+	List<FraseEntidade> getAllPhrases();
 }

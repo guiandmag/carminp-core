@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import com.achieve.carminp.core.model.in.dao.IGenericDAO;
 import com.achieve.carminp.core.model.in.entidade.IEntity;
-import com.uaihebert.factory.EasyCriteriaFactory;
-import com.uaihebert.model.EasyCriteria;
 
 /**
  * Classe abstrata que implementa <code>IGenericDAO</code> e implementa as
@@ -41,21 +39,14 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 	 */
 	@Override
 	public void save(T entity) {
-		em.persist(entity);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 */
-	@Override
-	public void update(T entity) {
 		Object id = entity.getId();
 		
-		if(id != null)
+		if (id == null) {
+			LOGGER.info("Entidade persistida {}", entity.getClass().getName());
+			em.persist(entity);
+		} else 
+			LOGGER.info("Entidade atualizada {}", entity.getClass().getName());
 			em.merge(entity);
-		else 
-			LOGGER.info("Entidade nao encontrada {}", entity.getClass().getName());
 	}
 	
 	/**
@@ -93,20 +84,6 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 	public List<T> findAll() {
 		Query q = em.createQuery("from " + getClassT().getName() + " t");
 		return q.getResultList();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 */
-	@Override
-	public List<T> findAllWithClauses(int offset, int limit) {
-		EasyCriteria<T> entity = EasyCriteriaFactory.createQueryCriteria(em, getClassT());
-		entity.setFirstResult(offset);
-		entity.setMaxResults(limit);
-		List<T> results = entity.getResultList();
-		
-		return results;
 	}
 	
 	/**

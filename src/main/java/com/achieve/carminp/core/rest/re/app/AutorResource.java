@@ -49,7 +49,7 @@ public class AutorResource implements IAutorResource{
 		}
 		
 		URI uri = UriBuilder.fromPath("autor/{nome}").build(
-						autor.getNome());
+						autor.getNome(), false);
 		
 		return Response.created(uri).entity(autor).build();
 	}
@@ -59,7 +59,7 @@ public class AutorResource implements IAutorResource{
 	 */
 	@Override
 	public Response atualizar(final AutorEntidade autor, HttpServletRequest req) {
-		service.update(autor);
+		service.save(autor);
 		
 		return Response.status(Status.OK).build();
 	}
@@ -83,19 +83,6 @@ public class AutorResource implements IAutorResource{
 	@Override
 	public Response buscarTodos() {
 		List<AutorEntidade> autoresEncontrados = service.findAll();
-		
-		if(autoresEncontrados == null) 
-			throw new NotFoundException();
-		
-		return Response.ok(autoresEncontrados).build();	
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Response buscarTodosComClausulas(final int start, final int size){
-		List<AutorEntidade> autoresEncontrados = service.findAllWithClauses(start, size);
 		
 		if(autoresEncontrados == null) 
 			throw new NotFoundException();

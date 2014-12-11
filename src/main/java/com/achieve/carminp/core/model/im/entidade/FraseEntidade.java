@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.achieve.carminp.core.model.im.enumaration.RatingEnum;
 import com.achieve.carminp.core.model.in.entidade.IEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -17,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
  * Entidade para representar a frase a ser salva no DB.
  *
  * @author guilherme.magalhaes
- * @version 1.0
+ * @version 2.0
  * @see IEntity
  */
 @Entity
@@ -42,23 +43,36 @@ public class FraseEntidade implements IEntity<Long> {
 	@XmlElement
 	private String frase;
 	
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "frase_avaliacao")
+	@XmlElement
+	private RatingEnum avaliacao;
+	
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "autor_id", nullable = false)
 	@Valid
 	@JsonBackReference
 	@XmlElement(name = "autorFrase")
 	private AutorEntidade autor;
 	
+	@ManyToOne
+	@JoinColumn(name = "favorito_id")
+	@Valid
+	@XmlElement
+	private FavoritoEndidade favorito;
 	
 	public FraseEntidade() {
 		super();
 	}   
 	
-	public FraseEntidade(Long id, String frase, AutorEntidade autor) {
+	public FraseEntidade(Long id, String frase, RatingEnum avaliacao,
+			AutorEntidade autor, FavoritoEndidade favorito) {
 		super();
 		this.id = id;
 		this.frase = frase;
+		this.avaliacao = avaliacao;
 		this.autor = autor;
+		this.favorito = favorito;
 	}
 
 	/**
@@ -77,6 +91,14 @@ public class FraseEntidade implements IEntity<Long> {
 	public void setFrase(String frase) {
 		this.frase = frase;
 	}
+	
+	public RatingEnum getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(RatingEnum avaliacao) {
+		this.avaliacao = avaliacao;
+	}
 
 	public AutorEntidade getAutor() {
 		return autor;
@@ -85,12 +107,24 @@ public class FraseEntidade implements IEntity<Long> {
 	public void setAutor(AutorEntidade autor) {
 		this.autor = autor;
 	}
+	
+	public FavoritoEndidade getFavorito() {
+		return favorito;
+	}
+
+	public void setFavorito(FavoritoEndidade favorito) {
+		this.favorito = favorito;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((autor == null) ? 0 : autor.hashCode());
+		result = prime * result
+				+ ((avaliacao == null) ? 0 : avaliacao.hashCode());
+		result = prime * result
+				+ ((favorito == null) ? 0 : favorito.hashCode());
 		result = prime * result + ((frase == null) ? 0 : frase.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
@@ -110,6 +144,13 @@ public class FraseEntidade implements IEntity<Long> {
 				return false;
 		} else if (!autor.equals(other.autor))
 			return false;
+		if (avaliacao != other.avaliacao)
+			return false;
+		if (favorito == null) {
+			if (other.favorito != null)
+				return false;
+		} else if (!favorito.equals(other.favorito))
+			return false;
 		if (frase == null) {
 			if (other.frase != null)
 				return false;
@@ -125,8 +166,9 @@ public class FraseEntidade implements IEntity<Long> {
 
 	@Override
 	public String toString() {
-		return "FraseEntidade [id=" + id + ", frase=" + frase + ", autor="
-				+ autor + "]";
+		return "FraseEntidade [id=" + id + ", frase=" + frase + ", avaliacao="
+				+ avaliacao + ", autor=" + autor + ", favorito=" + favorito
+				+ "]";
 	}
-
+	
 }

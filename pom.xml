@@ -6,7 +6,7 @@
 	<inceptionYear>2014</inceptionYear>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.achieve</groupId>
-	<version>1.0</version>
+	<version>2.0</version>
 	<artifactId>Carminp</artifactId>
 	<packaging>war</packaging>
 
@@ -22,6 +22,18 @@
 		<project.version.jackson>2.4.3</project.version.jackson>
 		<project.version.slf4j>1.7.7</project.version.slf4j>
 	</properties>
+	
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/guiandmag/carminp-core/issues</url>
+	</issueManagement>
+	
+	<distributionManagement>
+		<site>
+			<id>github-pages</id>
+			<url>http://guiandmag.github.io/carminp-core/</url>
+		</site>
+	</distributionManagement>
 
 	<dependencies>
 		<!-- Dependencia global, usada por todos os modulos -->
@@ -84,8 +96,8 @@
 		<!-- FIM LOG API's IMPORTS -->
 		<dependency>
 			<groupId>uaihebert.com</groupId>
-			<artifactId>EasyCriteria</artifactId>
-			<version>3.0.0</version>
+			<artifactId>uaiCriteria</artifactId>
+			<version>4.0.0</version>
 		</dependency>
 		<!-- HIBERNATE API's IMPORTS -->
 		<dependency>

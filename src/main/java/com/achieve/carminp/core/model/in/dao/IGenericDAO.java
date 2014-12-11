@@ -23,18 +23,14 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
 public interface IGenericDAO<T extends IEntity<?>> {
 	
 	/**
-	 * Metodo pra salvar as entidades no <b>DB</b>.
+	 * Metodo pra salvar as entidades no <b>DB</b> se o 
+	 * <code>ID</code> for igual a <code>NULL</code>, se já
+	 * existir, sera feita a atualizacao da entidade no 
+	 * <b>DB</b>.
 	 * 
 	 * @param entity
 	 */
 	void save (T entity);
-	
-	/**
-	 * Metodo pra atualizar as entidades no <b>DB</b>.
-	 * 
-	 * @param entity
-	 */
-	void update(T entity);
 	
 	/**
 	 * Metodo pra deletar as entidades no <b>DB</b>.
@@ -59,15 +55,6 @@ public interface IGenericDAO<T extends IEntity<?>> {
 	 * @return
 	 */
 	List<T> findAll();
-	
-	/**
-	 * Metodo pra recuperar tudo nas entidades no <b>DB</b> com as clausulas <code>OFFSET<> LIMIT<></code>.
-	 * 
-	 * @param offset
-	 * @param limit
-	 * @return
-	 */
-	List<T> findAllWithClauses(int offset, int limit);
 	
 	/**
 	 * Metodo pra recuperar valores no <b>DB</b> pelos parametros usados,

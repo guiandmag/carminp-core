@@ -1,10 +1,14 @@
 package com.achieve.carminp.core.model.im.entidade;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.achieve.carminp.core.model.in.entidade.IEntity;
@@ -13,7 +17,7 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
  * Entidade para representar o usuario a ser salvo no DB.
  *
  * @author guilherme.magalhaes
- * @version 1.1
+ * @version 2.0
  * @see IEntity
  */
 @Entity
@@ -22,13 +26,15 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
 @XmlRootElement(name = "usuario")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class UsuarioEntidade implements IEntity<Long> {
-
+	
+	private static final long serialVersionUID = 1L;
+	
 	@Transient
 	public static final String USUARIO_SEQUENCIA = "USUARIO_SEQUENCIA";
 	
 	@Id
 	@GeneratedValue(generator = USUARIO_SEQUENCIA, strategy = GenerationType.SEQUENCE)
-	@Column(name = "usuario_id", updatable = false, unique = true, nullable = false)
+	@Column(name = "usuario_id")
 	@XmlAttribute
 	private Long id;
 	
@@ -48,8 +54,10 @@ public class UsuarioEntidade implements IEntity<Long> {
 	@XmlElement
 	private String urlFoto;
 	
-	private static final long serialVersionUID = 1L;
-
+	@OneToMany(mappedBy = "usuario", orphanRemoval = true)
+	@XmlElementWrapper
+	private List<FavoritoEndidade> favoritos = new LinkedList<>();
+	
 	public UsuarioEntidade() {
 		super();
 	}

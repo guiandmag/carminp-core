@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--- Motivo: Criacao de tabelas que serao alimentadas para o uso do sistema Carminp
--- Autor : Guilherme Magalhaes
--- Data : 17/10/2014
+-- Motivo : Criacao de tabelas que serao alimentadas para o uso do sistema Carminp
+-- Autor  : Guilherme Magalhaes
+-- Data   : 17/10/2014
+-- Versao : 2.0
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------- TABELA: TBL_USUARIO --------------------------------------------------------------------------
@@ -72,10 +73,15 @@ CREATE TABLE TBL_FRASE
 (
   frase_id BIGINT NOT NULL,
   frase_frase CHARACTER VARYING(244) NOT NULL,
-  autor_id bigint NOT NULL,
+  frase_avaliacao NUMERIC,
+  autor_id BIGINT NOT NULL,
+  favorito_id BIGINT,
   CONSTRAINT frase_pk PRIMARY KEY (frase_id),
   CONSTRAINT TBL_AUTOR_FK FOREIGN KEY (autor_id)
       REFERENCES TBL_AUTOR (autor_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT TBL_FAVORITO_FK FOREIGN KEY (favorito_id)
+      REFERENCES TBL_FAVORITO (favorito_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (
@@ -87,10 +93,49 @@ ALTER TABLE TBL_FRASE
 COMMENT ON TABLE public.tbl_frase IS 'Tabela que ira guardar as grases geradas e guardar em seus respectivos autores';
 COMMENT ON COLUMN tbl_frase.frase_id IS 'Id da frase a ser gerada pelo DB';
 COMMENT ON COLUMN tbl_frase.frase_frase IS 'Frase a ser guardada no DB';
-COMMENT ON COLUMN tbl_frase.autor_id IS 'Chave que ira fazer FK para a tabela tbl_autor'
+COMMENT ON COLUMN tbl_frase.frase_avaliacao IS 'Coluna que ira guardar o valor de rating das frases.';
+COMMENT ON COLUMN tbl_frase.autor_id IS 'Chave que ira fazer FK para a tabela tbl_autor';
+COMMENT ON COLUMN tbl_frase.favorito_id IS 'Chave que ira fazer FK para a tabela tbl_favorito';
   
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------- TABELA: TBL_FAVORITO -------------------------------------------------------------------------
 
+CREATE TABLE TBL_FAVORITO
+(
+  favorito_id BIGINT NOT NULL,
+  favorito_favoritado BOOLEAN NOT NULL DEFAULT FALSE, 
+  usuario_id BIGINT, 
+  CONSTRAINT favorito_pk PRIMARY KEY (favorito_id),
+  CONSTRAINT TBL_USUARIO_FK FOREIGN KEY (usuario_id)
+      REFERENCES TBL_USUARIO (usuario_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE TBL_FAVORITO
+  OWNER TO postgres;
+  
+COMMENT ON TABLE public.tbl_favorito IS 'Tabela para fazer intermedio entre usuarios e frases, assim evitando uma cardinalidade de muitos para muitos.';
+COMMENT ON COLUMN tbl_favorito.favorito_id IS 'Id da tabela';
+COMMENT ON COLUMN tbl_favorito.favorito_favoritado IS 'Coluna que ira guardar se frase foi ou nao favoritado';
+COMMENT ON COLUMN tbl_favorito.usuario_id IS 'Chave estrangeira para a tbl_usuario';
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------- SEQUENCE: FAVORITO_SEQUENCIA ----------------------------------------------------------------------
+
+CREATE SEQUENCE FAVORITO_SEQUENCE
+  INCREMENT 50
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE FAVORITO_SEQUENCE
+  OWNER TO postgres;
+  
+COMMENT ON SEQUENCE FAVORITO_SEQUENCE IS 'Gerar id para o PK da tabela tbl_favorito';
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------- SEQUENCE: USUARIO_SEQUENCIA -----------------------------------------------------------------------
 
 CREATE SEQUENCE USUARIO_SEQUENCIA

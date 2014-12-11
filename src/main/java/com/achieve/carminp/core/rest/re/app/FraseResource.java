@@ -32,7 +32,7 @@ public class FraseResource implements IFraseResource{
 	 */
 	@Override
 	public Response atualizar(final FraseEntidade frase, HttpServletRequest req) {
-		service.update(frase);
+		service.save(frase);
 		
 		return Response.status(Status.OK).build();
 	}
@@ -42,7 +42,7 @@ public class FraseResource implements IFraseResource{
 	 */
 	@Override
 	public Response buscarTodos() {
-		List<FraseEntidade> frasesEcontradas = service.findAll();
+		final List<FraseEntidade> frasesEcontradas = service.getAllPhrases();
 		
 		if(frasesEcontradas == null)
 			throw new NotFoundException();
@@ -55,7 +55,7 @@ public class FraseResource implements IFraseResource{
 	 */
 	@Override
 	public Response buscarTodosComClausulas(final int start, final int size){
-		List<FraseEntidade> frasesEcontradas = service.findAllWithClauses(start, size);
+		List<FraseEntidade> frasesEcontradas = service.getPhrasesWithClauses(start, size);
 		
 		if(frasesEcontradas == null)
 			throw new NotFoundException();

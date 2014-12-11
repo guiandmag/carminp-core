@@ -59,7 +59,7 @@ public class UsuarioResource implements IUsuarioResource{
 	 */
 	@Override
 	public Response atualizar(final UsuarioEntidade usuario, HttpServletRequest req) {
-		service.update(usuario);
+		service.save(usuario);
 		
 		return Response.status(Status.OK).build();
 	}
@@ -90,19 +90,6 @@ public class UsuarioResource implements IUsuarioResource{
 		return Response.ok(usuarioEncontrados).build();
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Response buscarTodosComClausulas(final int start, final int size){
-		final List<UsuarioEntidade> usuarioEncontrados = service.findAllWithClauses(start, size);
-		
-		if(usuarioEncontrados == null) 
-			throw new NotFoundException();
-		
-		return Response.ok(usuarioEncontrados).build();
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */

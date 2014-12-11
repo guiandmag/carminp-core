@@ -1,0 +1,50 @@
+* [33mabdefc0[m Atualizacoes para seguir metricas para alcancar uma boa qualidade de codigo, seguindo as regras do SonarQube
+* [33m7a1b9ef[m Atualizacao geral da API contemplando novas funcionalidades e tambem sendo preparada para a versao 2.0 da API REST
+* [33md5907d8[m Resolucao da feature #5
+* [33m44c0a97[m Adicao de EJB na interface de CRUD e alteracao nos servicos REST para evitar bugs relacionados a PATH do servico e tambem a forma que o documento sera apresentado
+* [33mdcae1f6[m Atualizacao arquiteturial do sistema e assim lancando a versao 1.1 do sistema
+* [33m2b25505[m Adicao de response em todos os metodos da minha interface REST, tornando minha API RESTful
+* [33m85e14f5[m Commit de atualizacao do pom.xml para adicionar o profile do Openshift e adicao do plugin do wildfly
+* [33m12d3219[m Delete org.eclipse.wst.ws.service.policy.prefs
+* [33mefaa0a0[m Delete org.eclipse.wst.validation.prefs
+* [33mf880d42[m Delete org.eclipse.wst.jsdt.ui.superType.name
+* [33m1bdcf45[m Delete org.eclipse.wst.jsdt.ui.superType.container
+* [33maf12a1a[m Delete org.eclipse.wst.common.project.facet.core.xml
+* [33ma569f4e[m Delete org.eclipse.wst.common.project.facet.core.prefs.xml
+* [33mc846a14[m Delete org.hibernate.eclipse.console.prefs
+* [33m86cada7[m Delete org.eclipse.wst.common.component
+* [33md18ef65[m Delete org.eclipse.m2e.core.prefs
+* [33m188fb64[m Delete org.eclipse.jpt.core.prefs
+* [33m7145c92[m Delete org.eclipse.jdt.core.prefs
+* [33m997c2e9[m Delete org.eclipse.core.resources.prefs
+* [33mb3ca263[m Delete .jsdtscope
+* [33m44d43e9[m Delete .project
+* [33m642a6dc[m Delete .classpath
+* [33me5c9371[m Update .gitignore
+* [33m7df4fb7[m Delete .tern-project
+* [33mf3c8c9b[m Alteracao UsuarioEntidade
+* [33ma4bf0b2[m Trocando de pacote o UsuarioResource
+* [33m5d53565[m Atualizacao dos servicos REST criado e criado a entidade UsuarioEntidade e todos os seus recursos e servicos
+* [33m43083a7[m Atualizacao do REST, adicao de funcionalidade de criar frase pela API
+* [33mf739cc0[m Atualizacao do arquivo de datasource para JTA como default, mudanca do persistence.xml de 2.0 pra 2.1 e atualizacao do README.MD
+* [33mb745fa5[m Atualizacao de CSS e Classes
+* [33m439a404[m Atualizacao no CSS da pagina para alterar background color
+* [33m544e9a7[m Alteracao da classe fraseservice, para recuperar as frases pelo id do autor, e adicao de uma index padrao para o projeto com a utilizacao do framework css pure
+* [33m17b1640[m Retirado o LIKE para busca de frases pelo nome do autor, para nao haver problema quando chegar a um numero alto de autores cadastrados no APP
+*   [33me5c3abc[m Merge branch 'master' of github.com:guiandmag/carminp-core
+[32m|[m[33m\[m  
+[32m|[m * [33med11d50[m Resolucao do bug #1
+* [33m|[m [33m4b110e4[m Resolucao de bug #1 e melhora #2
+[33m|[m[33m/[m  
+* [33m4e291d9[m Adicao de operacoes de busca por nome e id do autor nas frases, e recuperar autor por nome dele
+* [33m22ee6d8[m Adicionando funcionalidades aos servicos REST do sistema
+* [33m000accc[m Adicao da biblioteca do Jackson e resolucao do problema de lazy inicialization
+* [33mf6e816b[m Insercao de novo arquivo Datasource, e adicao de classes REST
+* [33mba81bd5[m Mudancas de arquivos SQL, e retirada de classes de teste
+* [33m7bb1dfd[m Atualização de conexao com o DB, agora feita pelo datasource interno do WILDFLY, adicao dos arquivos .sql e adicao de classe de teste, sendo necessario configuracao para a insercao de um banco fake pra sua utilizacao
+* [33mb728b48[m Atualizacao de configuracao de datasource, mais classes de servico e negocio
+* [33m3d5d040[m Adicao de classes de negocio do sistema
+* [33me0e349a[m Atualizacao do pom.xml para nao falhar quando nao houver web.xml
+* [33me43c2e5[m Atualizacao de arquivos de configuracao, criacao de classes de modelo do sistema
+* [33m3e706b1[m Commit do archetype do projeto CARMINP
+* [33mf22a1d6[m Initial commit
