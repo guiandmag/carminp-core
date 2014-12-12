@@ -68,12 +68,13 @@ COMMENT ON INDEX uk_autor__autor_nome IS 'Forçar para o nome do autor ser uniqu
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------- TABELA: TBL_FRASE ----------------------------------------------------------------------------
+CREATE TYPE RATING AS ENUM ( 'Star1', 'Star2', 'Star3', 'Star4', 'Star5' );
 
 CREATE TABLE TBL_FRASE
 (
   frase_id BIGINT NOT NULL,
   frase_frase CHARACTER VARYING(244) NOT NULL,
-  frase_avaliacao NUMERIC,
+  frase_avaliacao RATING,
   autor_id BIGINT NOT NULL,
   favorito_id BIGINT,
   CONSTRAINT frase_pk PRIMARY KEY (frase_id),

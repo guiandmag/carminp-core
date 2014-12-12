@@ -6,8 +6,9 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.achieve.carminp.core.model.im.enumaration.RatingEnum;
@@ -36,14 +37,14 @@ public class FraseEntidade implements IEntity<Long> {
 	@Id
 	@GeneratedValue(generator = FRASE_SEQUENCIA, strategy = GenerationType.SEQUENCE)
 	@Column(name = "frase_id", updatable = false, unique = true, nullable = false)
-	@XmlAttribute
+	@XmlID
 	private Long id;
 	
 	@Column(name = "frase_frase", nullable = false, length = 244)
 	@XmlElement
 	private String frase;
 	
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "frase_avaliacao")
 	@XmlElement
 	private RatingEnum avaliacao;
@@ -52,21 +53,22 @@ public class FraseEntidade implements IEntity<Long> {
 	@JoinColumn(name = "autor_id", nullable = false)
 	@Valid
 	@JsonBackReference
-	@XmlElement(name = "autorFrase")
+	@XmlAnyElement
 	private AutorEntidade autor;
 	
 	@ManyToOne
 	@JoinColumn(name = "favorito_id")
 	@Valid
+	@JsonBackReference
 	@XmlElement
-	private FavoritoEndidade favorito;
+	private FavoritoEntidade favorito;
 	
 	public FraseEntidade() {
 		super();
 	}   
 	
 	public FraseEntidade(Long id, String frase, RatingEnum avaliacao,
-			AutorEntidade autor, FavoritoEndidade favorito) {
+			AutorEntidade autor, FavoritoEntidade favorito) {
 		super();
 		this.id = id;
 		this.frase = frase;
@@ -108,11 +110,11 @@ public class FraseEntidade implements IEntity<Long> {
 		this.autor = autor;
 	}
 	
-	public FavoritoEndidade getFavorito() {
+	public FavoritoEntidade getFavorito() {
 		return favorito;
 	}
 
-	public void setFavorito(FavoritoEndidade favorito) {
+	public void setFavorito(FavoritoEntidade favorito) {
 		this.favorito = favorito;
 	}
 

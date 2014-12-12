@@ -216,6 +216,7 @@
 
 	<developers>
 		<developer>
+			<id>1</id>
 			<name>Guilherme Magalhaes</name>
 			<email>guilherme.magalhaes@consulters.com.br</email>
 			<roles>

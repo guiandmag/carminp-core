@@ -8,26 +8,28 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.achieve.carminp.core.model.in.entidade.IEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * Entidade para representar o usuario a ser salvo no DB.
  *
  * @author guilherme.magalhaes
+ * @since 11/2014
  * @version 2.0
  * @see IEntity
  */
 @Entity
 @Table(name="TBL_FAVORITO")
-@SequenceGenerator(name = FavoritoEndidade.FAVORITO_SEQUENCIA, sequenceName = FavoritoEndidade.FAVORITO_SEQUENCIA, initialValue = 1, allocationSize = 50)
+@SequenceGenerator(name = FavoritoEntidade.FAVORITO_SEQUENCIA, sequenceName = FavoritoEntidade.FAVORITO_SEQUENCIA, initialValue = 1, allocationSize = 50)
 @XmlRootElement(name = "favorito")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FavoritoEndidade implements IEntity<Long> {
+public class FavoritoEntidade implements IEntity<Long> {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -37,7 +39,7 @@ public class FavoritoEndidade implements IEntity<Long> {
 	@Id
 	@GeneratedValue(generator = FAVORITO_SEQUENCIA, strategy = GenerationType.SEQUENCE)
 	@Column(name = "favorito_id")
-	@XmlAttribute
+	@XmlID
 	private Long id;
 	
 	@Column(name = "favorito_favoritado", nullable = false)
@@ -45,6 +47,7 @@ public class FavoritoEndidade implements IEntity<Long> {
 	private boolean favoritado;
 	
 	@OneToMany(mappedBy = "favorito")
+	@JsonManagedReference
 	@XmlElementWrapper
 	private List<FraseEntidade> frases = new LinkedList<>();
 	
@@ -54,11 +57,11 @@ public class FavoritoEndidade implements IEntity<Long> {
 	@XmlElement
 	private UsuarioEntidade usuario;
 
-	public FavoritoEndidade() {
+	public FavoritoEntidade() {
 		super();
 	}   
 	
-	public FavoritoEndidade(Long id, boolean favoritado,
+	public FavoritoEntidade(Long id, boolean favoritado,
 			List<FraseEntidade> frases, UsuarioEntidade usuario) {
 		super();
 		this.id = id;
@@ -119,7 +122,7 @@ public class FavoritoEndidade implements IEntity<Long> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FavoritoEndidade other = (FavoritoEndidade) obj;
+		FavoritoEntidade other = (FavoritoEntidade) obj;
 		if (favoritado != other.favoritado)
 			return false;
 		if (frases == null) {
@@ -142,7 +145,7 @@ public class FavoritoEndidade implements IEntity<Long> {
 
 	@Override
 	public String toString() {
-		return "FavoritoEndidade [id=" + id + ", favoritado=" + favoritado
+		return "FavoritoEntidade [id=" + id + ", favoritado=" + favoritado
 				+ ", frases=" + frases + ", usuario=" + usuario + "]";
 	}
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.achieve.carminp.core.model.in.dao.IGenericDAO;
 import com.achieve.carminp.core.model.in.entidade.IEntity;
+import com.uaihebert.uaicriteria.UaiCriteria;
 
 /**
  * Classe abstrata que implementa <code>IGenericDAO</code> e implementa as
@@ -30,8 +32,14 @@ public abstract class GenericDAO<T extends IEntity<?>> implements IGenericDAO<T>
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericDAO.class);
 	
-	@PersistenceContext(unitName = "carminpDS")
+	@PersistenceContext(unitName = "carminpDS", type = PersistenceContextType.TRANSACTION)
 	protected EntityManager em;
+	
+	protected UaiCriteria<T> uaiCriteria;
+	
+	protected List<T> results = null;
+	
+	protected T result = null;
 	
 	/**
 	 * {@inheritDoc}

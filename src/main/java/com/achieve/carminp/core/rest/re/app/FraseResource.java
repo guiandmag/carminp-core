@@ -80,19 +80,6 @@ public class FraseResource implements IFraseResource{
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Response buscarFrasesPorAutorNome(final String nomeAutor) {
-		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorName(nomeAutor);
-		
-		if(frasesEcontradas == null) 
-			throw new NotFoundException();
-		
-		return Response.ok(frasesEcontradas).build();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public Response buscarFrasePorAutorId(final Long idAutor) {
 		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorId(idAutor);
 		

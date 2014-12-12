@@ -3,12 +3,10 @@ package com.achieve.carminp.core.business.im.service;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 
 import com.achieve.carminp.core.business.in.service.IFraseService;
 import com.achieve.carminp.core.model.ab.dao.GenericDAO;
 import com.achieve.carminp.core.model.im.entidade.FraseEntidade;
-import com.uaihebert.uaicriteria.UaiCriteria;
 import com.uaihebert.uaicriteria.UaiCriteriaFactory;
 
 /**
@@ -16,7 +14,7 @@ import com.uaihebert.uaicriteria.UaiCriteriaFactory;
  * para a implementacao dos requisitos necessitados para a transacao.
  * 
  * @author guilherme.magalhaes
- * @version 1.1
+ * @version 2.0
  * @since 10/2014
  * @see GenericDAO, {@link FraseEntidade}, {@link IFraseService}
  */
@@ -24,8 +22,6 @@ import com.uaihebert.uaicriteria.UaiCriteriaFactory;
 public class FraseService extends GenericDAO<FraseEntidade> implements 
 		IFraseService {
 
-	UaiCriteria<FraseEntidade> uaiCriteria;
-	
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -33,9 +29,10 @@ public class FraseService extends GenericDAO<FraseEntidade> implements
 	@Override
 	public List<FraseEntidade> getPhrasesWithClauses(int offset, int limit) {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, FraseEntidade.class);
+		uaiCriteria.innerJoinFetch("autor");
 		uaiCriteria.setFirstResult(offset);
 		uaiCriteria.setMaxResults(limit);
-		final List<FraseEntidade> results = uaiCriteria.getResultList();
+		results = uaiCriteria.getResultList();
 		
 		return results;
 	}
@@ -47,11 +44,11 @@ public class FraseService extends GenericDAO<FraseEntidade> implements
 	@Override
 	public List<FraseEntidade> getPhrasesByAuthorId(Long id) {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, FraseEntidade.class);
-		uaiCriteria.innerJoin("autor");
+		uaiCriteria.innerJoinFetch("autor");
 		uaiCriteria.andEquals("autor.id", id);
-		final List<FraseEntidade> fraseEntidade = uaiCriteria.getResultList();
+		results = uaiCriteria.getResultList();
 		
-		return fraseEntidade;
+		return results;
 	}
 
 	/**
@@ -59,20 +56,12 @@ public class FraseService extends GenericDAO<FraseEntidade> implements
 	 * 
 	 */
 	@Override
-	public List<FraseEntidade> getPhrasesByAuthorName(String name) {
-		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, FraseEntidade.class);
-		uaiCriteria.innerJoin("autor");
-		uaiCriteria.andStringLike(true, "autor.nome", "%" + name + "%");
-		final List<FraseEntidade> frasesEntidade = uaiCriteria.getResultList();
-		
-		return frasesEntidade;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
 	public List<FraseEntidade> getAllPhrases() {
-		Query q = em.createQuery("SELECT f.frase_id, f.frase_frase, f.frase_avaliacao FROM tbl_frase f");
-		return (List<FraseEntidade>)q.getResultList();
+		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, FraseEntidade.class);
+		uaiCriteria.innerJoinFetch("autor").orderByAsc("id");
+		results = uaiCriteria.getResultList();
+		
+		return results;
 	}
 
 }

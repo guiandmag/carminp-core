@@ -13,17 +13,40 @@ import com.achieve.carminp.core.model.in.dao.IGenericDAO;
  * 
  * @author guilherme.magalhaes
  * @since 09/2014
- * @version 1.0
+ * @version 2.0
  * @see AutorEntidade
  */
 @Local
 public interface IAutorService extends IGenericDAO<AutorEntidade> {
 	
 	/**
-	 * Metodo para recuperar todos os autores ordenado pelo <b>ID</b>.
+	 * Metodo para recuperar autor pelo <b>ID</b>.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	AutorEntidade getAuthorById(Long id);
+	
+	/**
+	 * Metodo para retornar somente o autor, sem suas frases.
 	 * 
 	 * @return
 	 */
-	List<AutorEntidade> getAllAuthorOrderById();
+	List<AutorEntidade> getOnlyAuthor();
 	
+	/**
+	 * Metodo para recuperar somente o autor pelo seu nome.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	List<AutorEntidade> getOnlyAuthorByName(String name);
+	
+	/**
+	 * Metodo para recuperar somente o autor pelo seu nome.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	List<AutorEntidade> getAuthorByName(String name);
 }

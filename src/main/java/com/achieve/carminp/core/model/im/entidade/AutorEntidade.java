@@ -7,9 +7,9 @@ import java.util.List;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.achieve.carminp.core.model.in.entidade.IEntity;
@@ -27,6 +27,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @SequenceGenerator(name = AutorEntidade.AUTOR_SEQUENCIA, sequenceName = AutorEntidade.AUTOR_SEQUENCIA, initialValue = 1, allocationSize = 50)
 @XmlRootElement(name = "autor")
 @XmlAccessorType(XmlAccessType.FIELD)
+@NamedQueries({
+	@NamedQuery(name  = "AutorEntidade.getOnlyAuthor", 
+				query = "SELECT a.id, a.nome FROM AutorEntidade a ORDER BY a.id"),
+	@NamedQuery(name  = "AutorEntidade.getOnlyAuthorByName",
+				query = "SELECT a.id, a.nome FROM AutorEntidade a WHERE a.nome = :nome")
+})
 public class AutorEntidade implements IEntity<Long> {
 
 	private static final long serialVersionUID = 1L;
@@ -37,7 +43,7 @@ public class AutorEntidade implements IEntity<Long> {
 	@Id
 	@GeneratedValue(generator = AUTOR_SEQUENCIA, strategy = GenerationType.SEQUENCE)
 	@Column(name = "autor_id")
-	@XmlAttribute
+	@XmlID
 	private Long id;
 	
 	@Column(name = "autor_nome", nullable = false, length = 50)
@@ -47,7 +53,7 @@ public class AutorEntidade implements IEntity<Long> {
 	@OneToMany(mappedBy = "autor", orphanRemoval = true)
 	@JsonManagedReference
 	@XmlElementWrapper
-	private List<FraseEntidade> frases = new LinkedList<FraseEntidade>();
+	private List<FraseEntidade> frases = new LinkedList<>();
 
 	
 	public AutorEntidade() {

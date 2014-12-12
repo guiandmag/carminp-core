@@ -62,7 +62,7 @@ public interface IFraseResource {
 	 */
 	@GET
 	@Path("/pag")
-	Response buscarTodosComClausulas(@QueryParam("start") int start, @DefaultValue("5") @QueryParam("size") int size);
+	Response buscarTodosComClausulas(@DefaultValue("1") @QueryParam("start") int start, @DefaultValue("5") @QueryParam("size") int size);
 	
 	/**
 	 * Metodo para remover a frase pelo seu <code>id</code> fornecido
@@ -74,17 +74,6 @@ public interface IFraseResource {
 	@DELETE
 	@Path("/{id:[0-9][0-9]*}")
 	Response remover(Long id);
-	
-	/**
-	 * Metodo para recuperar as frases pelo 
-	 * nome do autor na API de <b>REST</b>.
-	 * 
-	 * @param nomeAutor
-	 * @return
-	 */
-	@GET
-	@Path("/autor/{nome}")
-	Response buscarFrasesPorAutorNome(@PathParam("nome") String nomeAutor);
 	
 	/**
 	 * Metodo para recuperar as frases pelo

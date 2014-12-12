@@ -1,9 +1,7 @@
 package com.achieve.carminp.core.rest.re.app;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +24,7 @@ import com.achieve.carminp.core.rest.re.in.IUsuarioResource;
  * 
  * @author guilherme.magalhaes
  * @since 10/2014
- * @version 1.1
+ * @version 2.0
  * @see IUsuarioResource
  */
 public class UsuarioResource implements IUsuarioResource{
@@ -82,7 +80,7 @@ public class UsuarioResource implements IUsuarioResource{
 	 */
 	@Override
 	public Response buscarTodos() {
-		final List<UsuarioEntidade> usuarioEncontrados = service.findAll();
+		final List<UsuarioEntidade> usuarioEncontrados = service.getOnlyUser();
 		
 		if(usuarioEncontrados == null) 
 			throw new NotFoundException();
@@ -108,10 +106,33 @@ public class UsuarioResource implements IUsuarioResource{
 	 */
 	@Override
 	public Response buscarUsuarioPorNome(final String nome) {
-		Map<String, Object> field = new HashMap<String, Object>();
-		field.put("nome", nome);
+		List<UsuarioEntidade> usuariosEncontrados = service.getUsersByName(nome);
 		
-		List<UsuarioEntidade> usuariosEncontrados = service.findByFields(field, true, 0, null);
+		if(usuariosEncontrados == null) 
+			throw new NotFoundException();
+		
+		return Response.ok(usuariosEncontrados).build();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarUsuarioEFavoritoPorNomeUsuario() {
+		List<UsuarioEntidade> usuariosEncontrados = service.getUserAndFavoritePhrases();
+		
+		if(usuariosEncontrados == null) 
+			throw new NotFoundException();
+		
+		return Response.ok(usuariosEncontrados).build();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarTodosComClausulas(int start, int size) {
+		List<UsuarioEntidade> usuariosEncontrados = service.getUserAndFavoritePhrasesWithClause(start, size);
 		
 		if(usuariosEncontrados == null) 
 			throw new NotFoundException();

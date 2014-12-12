@@ -6,9 +6,9 @@ import java.util.List;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.achieve.carminp.core.model.in.entidade.IEntity;
@@ -17,6 +17,7 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
  * Entidade para representar o usuario a ser salvo no DB.
  *
  * @author guilherme.magalhaes
+ * @since 11/2014
  * @version 2.0
  * @see IEntity
  */
@@ -25,6 +26,10 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
 @SequenceGenerator(name = UsuarioEntidade.USUARIO_SEQUENCIA, sequenceName = UsuarioEntidade.USUARIO_SEQUENCIA, initialValue = 1, allocationSize = 50)
 @XmlRootElement(name = "usuario")
 @XmlAccessorType(XmlAccessType.FIELD)
+@NamedQueries({
+	@NamedQuery(name  = "UsuarioEntidade.getOnlyUser",
+				query = "SELECT u.id, u.nomeUsuario, u.email, u.senha, u.urlFoto FROM UsuarioEntidade u ORDER BY u.id")
+})
 public class UsuarioEntidade implements IEntity<Long> {
 	
 	private static final long serialVersionUID = 1L;
@@ -35,7 +40,7 @@ public class UsuarioEntidade implements IEntity<Long> {
 	@Id
 	@GeneratedValue(generator = USUARIO_SEQUENCIA, strategy = GenerationType.SEQUENCE)
 	@Column(name = "usuario_id")
-	@XmlAttribute
+	@XmlID
 	private Long id;
 	
 	@Column(name = "usuario_nome", nullable = false, length = 150)
@@ -56,7 +61,7 @@ public class UsuarioEntidade implements IEntity<Long> {
 	
 	@OneToMany(mappedBy = "usuario", orphanRemoval = true)
 	@XmlElementWrapper
-	private List<FavoritoEndidade> favoritos = new LinkedList<>();
+	private List<FavoritoEntidade> favoritos = new LinkedList<>();
 	
 	public UsuarioEntidade() {
 		super();

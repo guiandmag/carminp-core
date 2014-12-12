@@ -1,9 +1,7 @@
 package com.achieve.carminp.core.rest.re.app;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +24,7 @@ import com.achieve.carminp.core.rest.re.in.IAutorResource;
  * 
  * @author guilherme.magalhaes
  * @since 09/2014
- * @version 1.1
+ * @version 2.0
  * @see IAutorResource
  */
 public class AutorResource implements IAutorResource{
@@ -69,7 +67,7 @@ public class AutorResource implements IAutorResource{
 	 */
 	@Override
 	public Response buscarPorId(final Long id) {
-		AutorEntidade autorEncontrado = service.getById(id);
+		AutorEntidade autorEncontrado = service.getAuthorById(id);
 		
 		if (autorEncontrado == null) 
 			throw new NotFoundException();
@@ -82,7 +80,7 @@ public class AutorResource implements IAutorResource{
 	 */
 	@Override
 	public Response buscarTodos() {
-		List<AutorEntidade> autoresEncontrados = service.findAll();
+		List<AutorEntidade> autoresEncontrados = service.getOnlyAuthor();
 		
 		if(autoresEncontrados == null) 
 			throw new NotFoundException();
@@ -108,10 +106,20 @@ public class AutorResource implements IAutorResource{
 	 */
 	@Override
 	public Response buscarAutorPorNome(final String nomeAutor) {
-		Map<String, Object> field = new HashMap<String, Object>();
-		field.put("nome", nomeAutor);
+		List<AutorEntidade> autoresEncontrados = service.getOnlyAuthorByName(nomeAutor);
 		
-		List<AutorEntidade> autoresEncontrados = service.findByFields(field, true, 0, null);
+		if(autoresEncontrados == null) 
+			throw new NotFoundException();
+		
+		return Response.ok(autoresEncontrados).build();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Response buscarAutorPorNomeComFrase(final String nomeAutor) {
+		List<AutorEntidade> autoresEncontrados = service.getAuthorByName(nomeAutor);
 		
 		if(autoresEncontrados == null) 
 			throw new NotFoundException();

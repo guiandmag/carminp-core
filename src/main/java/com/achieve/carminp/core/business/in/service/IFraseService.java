@@ -37,12 +37,10 @@ public interface IFraseService extends IGenericDAO<FraseEntidade> {
 	List<FraseEntidade> getPhrasesByAuthorId(Long id);
 	
 	/**
-	 * Metodo para recuperar as frases pelo id do autor desejado.
+	 * Metodo para recuperar todas frases, ja com o fetch join
+	 * com a tbl_autor, evitando dessa forma round trip no <b>DB</b>.
 	 * 
-	 * @param name
 	 * @return
 	 */
-	List<FraseEntidade> getPhrasesByAuthorName(String name);
-	
 	List<FraseEntidade> getAllPhrases();
 }
