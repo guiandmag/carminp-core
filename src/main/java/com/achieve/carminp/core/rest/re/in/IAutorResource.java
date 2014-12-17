@@ -47,7 +47,7 @@ public interface IAutorResource extends IGenericRest<AutorEntidade> {
 	 * @return
 	 */
 	@GET
-	@Path("/frase/{nome}")
+	@Path("/{nome}/frases")
 	Response buscarAutorPorNomeComFrase(@PathParam("nome") String nomeAutor);
 	
 }

@@ -48,5 +48,5 @@ public interface IAutorService extends IGenericDAO<AutorEntidade> {
 	 * @param name
 	 * @return
 	 */
-	List<AutorEntidade> getAuthorByName(String name);
+	List<AutorEntidade> getAuthorByNameWithPhrases(String name);
 }

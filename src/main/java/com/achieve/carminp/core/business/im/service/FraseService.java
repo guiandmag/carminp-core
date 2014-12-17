@@ -29,9 +29,7 @@ public class FraseService extends GenericDAO<FraseEntidade> implements
 	@Override
 	public List<FraseEntidade> getPhrasesWithClauses(int offset, int limit) {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, FraseEntidade.class);
-		uaiCriteria.innerJoinFetch("autor");
-		uaiCriteria.setFirstResult(offset);
-		uaiCriteria.setMaxResults(limit);
+		uaiCriteria.innerJoinFetch("autor").setFirstResult(offset).setMaxResults(limit);
 		results = uaiCriteria.getResultList();
 		
 		return results;
@@ -44,8 +42,7 @@ public class FraseService extends GenericDAO<FraseEntidade> implements
 	@Override
 	public List<FraseEntidade> getPhrasesByAuthorId(Long id) {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, FraseEntidade.class);
-		uaiCriteria.innerJoinFetch("autor");
-		uaiCriteria.andEquals("autor.id", id);
+		uaiCriteria.innerJoinFetch("autor").andEquals("autor.id", id);
 		results = uaiCriteria.getResultList();
 		
 		return results;

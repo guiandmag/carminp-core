@@ -28,7 +28,9 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
 @XmlAccessorType(XmlAccessType.FIELD)
 @NamedQueries({
 	@NamedQuery(name  = "UsuarioEntidade.getOnlyUser",
-				query = "SELECT u.id, u.nomeUsuario, u.email, u.senha, u.urlFoto FROM UsuarioEntidade u ORDER BY u.id")
+				query = "SELECT u.id, u.nomeUsuario, u.email, u.senha, u.urlFoto FROM UsuarioEntidade u ORDER BY u.id"),
+	@NamedQuery(name  = "UsuarioEntidade.getOnlyUserByName",
+				query = "SELECT u.id, u.nomeUsuario, u.email, u.senha, u.urlFoto FROM UsuarioEntidade u WHERE u.nomeUsuario = :nome")	
 })
 public class UsuarioEntidade implements IEntity<Long> {
 	

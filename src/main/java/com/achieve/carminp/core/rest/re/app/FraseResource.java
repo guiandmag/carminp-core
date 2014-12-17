@@ -6,7 +6,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import com.achieve.carminp.core.business.in.service.IFraseService;
 import com.achieve.carminp.core.model.im.entidade.FraseEntidade;
@@ -18,7 +17,7 @@ import com.achieve.carminp.core.rest.re.in.IFraseResource;
  * 
  * @author guilherme.magalhaes
  * @since 09/2014
- * @version 1.1
+ * @version 2.0
  * @see IFraseResource
  */
 public class FraseResource implements IFraseResource{
@@ -34,7 +33,7 @@ public class FraseResource implements IFraseResource{
 	public Response atualizar(final FraseEntidade frase, HttpServletRequest req) {
 		service.save(frase);
 		
-		return Response.status(Status.OK).build();
+		return Response.ok().build();
 	}
 	
 	/**
@@ -73,7 +72,7 @@ public class FraseResource implements IFraseResource{
 		else 
 			throw new NotFoundException();
 		
-		return Response.status(Status.OK).build();
+		return Response.ok().build();
 	}
 	
 	/**

@@ -3,7 +3,6 @@ package com.achieve.carminp.core.business.im.service;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 
 import com.achieve.carminp.core.business.in.service.IAutorService;
 import com.achieve.carminp.core.model.ab.dao.GenericDAO;
@@ -28,8 +27,7 @@ public class AutorService extends GenericDAO<AutorEntidade> implements
 	@Override
 	public AutorEntidade getAuthorById(Long id) {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, AutorEntidade.class);
-		uaiCriteria.andEquals("id", id);
-		uaiCriteria.innerJoinFetch("frases");
+		uaiCriteria.innerJoinFetch("frases").andEquals("id", id);
 		result = uaiCriteria.getSingleResult();
 		
 		return result;
@@ -41,9 +39,9 @@ public class AutorService extends GenericDAO<AutorEntidade> implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AutorEntidade> getOnlyAuthor() {
-		final Query query = em.createNamedQuery("AutorEntidade.getOnlyAuthor");
+		results = em.createNamedQuery("AutorEntidade.getOnlyAuthor").getResultList();
 		
-		return (List<AutorEntidade>) query.getResultList();
+		return results;
 	}
 
 	/**
@@ -52,10 +50,7 @@ public class AutorService extends GenericDAO<AutorEntidade> implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AutorEntidade> getOnlyAuthorByName(String name) {
-		final Query query = em.createNamedQuery("AutorEntidade.getOnlyAuthorByName");
-		query.setParameter("nome", name);
-		
-		results = (List<AutorEntidade>)query.getResultList();
+		results = em.createNamedQuery("AutorEntidade.getOnlyAuthorByName").setParameter("nome", name).getResultList();
 		
 		return results;
 	}
@@ -64,12 +59,9 @@ public class AutorService extends GenericDAO<AutorEntidade> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<AutorEntidade> getAuthorByName(String name) {
+	public List<AutorEntidade> getAuthorByNameWithPhrases(String name) {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, AutorEntidade.class);
-		uaiCriteria.andStringLike(true, "nome", "%" + name + "%");
-		uaiCriteria.innerJoinFetch("frases");
-		uaiCriteria.orderByAsc("nome");
-		uaiCriteria.setDistinctTrue();
+		uaiCriteria.innerJoinFetch("frases").andStringLike(true, "nome", "%" + name + "%").orderByAsc("nome").setDistinctTrue();
 		results = uaiCriteria.getResultList();
 		
 		return results;

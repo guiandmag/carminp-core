@@ -119,7 +119,7 @@ public class AutorResource implements IAutorResource{
 	 */
 	@Override
 	public Response buscarAutorPorNomeComFrase(final String nomeAutor) {
-		List<AutorEntidade> autoresEncontrados = service.getAuthorByName(nomeAutor);
+		List<AutorEntidade> autoresEncontrados = service.getAuthorByNameWithPhrases(nomeAutor);
 		
 		if(autoresEncontrados == null) 
 			throw new NotFoundException();

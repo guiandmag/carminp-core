@@ -3,7 +3,6 @@ package com.achieve.carminp.core.business.im.service;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 
 import com.achieve.carminp.core.business.in.service.IUsuarioService;
 import com.achieve.carminp.core.model.ab.dao.GenericDAO;
@@ -28,10 +27,8 @@ public class UsuarioService extends GenericDAO<UsuarioEntidade> implements
 	@Override
 	public List<UsuarioEntidade> getUsersByName(String name) {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, UsuarioEntidade.class);
-		uaiCriteria.andStringLike(true, "nomeUsuario", "%" + name + "%");
-		uaiCriteria.innerJoinFetch("favoritos");
-		uaiCriteria.orderByAsc("nomeUsuario");
-		uaiCriteria.setDistinctTrue();
+		uaiCriteria.innerJoinFetch("favoritos").andStringLike(true, "nomeUsuario", "%" + name + "%")
+															.orderByAsc("nomeUsuario").setDistinctTrue();
 		results = uaiCriteria.getResultList();
 		
 		return results;
@@ -42,8 +39,11 @@ public class UsuarioService extends GenericDAO<UsuarioEntidade> implements
 	 */
 	@Override
 	public UsuarioEntidade getUserById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, UsuarioEntidade.class);
+		uaiCriteria.innerJoinFetch("favoritos").andEquals("id", id);
+		result = uaiCriteria.getSingleResult();
+		
+		return result;
 	}
 
 	/**
@@ -52,9 +52,9 @@ public class UsuarioService extends GenericDAO<UsuarioEntidade> implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UsuarioEntidade> getOnlyUser() {
-		final Query query = em.createNamedQuery("UsuarioEntidade.getOnlyUser");
+		results = em.createNamedQuery("UsuarioEntidade.getOnlyUser").getResultList();
 		
-		return (List<UsuarioEntidade>) query.getResultList();
+		return results;
 	}
 
 	/**
@@ -63,9 +63,7 @@ public class UsuarioService extends GenericDAO<UsuarioEntidade> implements
 	@Override
 	public List<UsuarioEntidade> getUserAndFavoritePhrases() {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, UsuarioEntidade.class);
-		uaiCriteria.innerJoinFetch("favoritos");
-		uaiCriteria.orderByAsc("nomeUsuario");
-		uaiCriteria.setDistinctTrue();
+		uaiCriteria.innerJoinFetch("favoritos").orderByAsc("nomeUsuario").setDistinctTrue();
 		results = uaiCriteria.getResultList();
 		
 		return results;
@@ -77,10 +75,7 @@ public class UsuarioService extends GenericDAO<UsuarioEntidade> implements
 	@Override
 	public List<UsuarioEntidade> getUserAndFavoritePhrasesWithClause(int offset, int limit) {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, UsuarioEntidade.class);
-		uaiCriteria.innerJoinFetch("favoritos");
-		uaiCriteria.setFirstResult(offset);
-		uaiCriteria.setMaxResults(limit);
-		uaiCriteria.orderByAsc("nomeUsuario");
+		uaiCriteria.innerJoinFetch("favoritos").setFirstResult(offset).setMaxResults(limit).orderByAsc("nomeUsuario");
 		results = uaiCriteria.getResultList();
 		
 		return results;
@@ -89,10 +84,12 @@ public class UsuarioService extends GenericDAO<UsuarioEntidade> implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<UsuarioEntidade> getOnlyUserByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		results = em.createNamedQuery("UsuarioEntidade.getOnlyUserByName").setParameter("nome", name).getResultList();
+		
+		return results;
 	}
 
 }

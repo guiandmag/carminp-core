@@ -198,9 +198,9 @@
 			<!-- Utilizado no build do Openshift -->
 			<id>openshift</id>
 			<build>
-				<finalName>${project.carminp.name}</finalName>
 				<plugins>
 					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<version>2.4</version>
 						<configuration>
