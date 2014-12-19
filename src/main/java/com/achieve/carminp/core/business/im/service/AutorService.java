@@ -2,8 +2,6 @@ package com.achieve.carminp.core.business.im.service;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
-
 import com.achieve.carminp.core.business.in.service.IAutorService;
 import com.achieve.carminp.core.model.ab.dao.GenericDAO;
 import com.achieve.carminp.core.model.im.entidade.AutorEntidade;
@@ -17,7 +15,6 @@ import com.uaihebert.uaicriteria.UaiCriteriaFactory;
  * @version 2.0
  * @see GenericDAO, {@link AutorEntidade}, {@link IAutorService}
  */
-@Stateless
 public class AutorService extends GenericDAO<AutorEntidade> implements
 		IAutorService {
 	

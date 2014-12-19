@@ -70,13 +70,14 @@ public class UsuarioEntidade implements IEntity<Long> {
 	}
 
 	public UsuarioEntidade(Long id, String nomeUsuario, String email,
-			String senha, String urlFoto) {
+			String senha, String urlFoto, List<FavoritoEntidade> favoritos) {
 		super();
 		this.id = id;
 		this.nomeUsuario = nomeUsuario;
 		this.email = email;
 		this.senha = senha;
 		this.urlFoto = urlFoto;
+		this.favoritos = favoritos;
 	}
 
 	/**
@@ -119,12 +120,22 @@ public class UsuarioEntidade implements IEntity<Long> {
 	public void setUrlFoto(String urlFoto) {
 		this.urlFoto = urlFoto;
 	}
+	
+	public List<FavoritoEntidade> getFavoritos() {
+		return favoritos;
+	}
+
+	public void setFavoritos(List<FavoritoEntidade> favoritos) {
+		this.favoritos = favoritos;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((favoritos == null) ? 0 : favoritos.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((nomeUsuario == null) ? 0 : nomeUsuario.hashCode());
@@ -146,6 +157,11 @@ public class UsuarioEntidade implements IEntity<Long> {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (favoritos == null) {
+			if (other.favoritos != null)
+				return false;
+		} else if (!favoritos.equals(other.favoritos))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -174,7 +190,7 @@ public class UsuarioEntidade implements IEntity<Long> {
 	public String toString() {
 		return "UsuarioEntidade [id=" + id + ", nomeUsuario=" + nomeUsuario
 				+ ", email=" + email + ", senha=" + senha + ", urlFoto="
-				+ urlFoto + "]";
+				+ urlFoto + ", favoritos=" + favoritos + "]";
 	}
-	
+
 }

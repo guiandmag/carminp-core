@@ -3,8 +3,8 @@ package com.achieve.carminp.core.model.in.dao;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import com.achieve.carminp.core.model.in.entidade.IEntity;
 
@@ -19,7 +19,7 @@ import com.achieve.carminp.core.model.in.entidade.IEntity;
  * @version 1.0
  * @see IEntity
  */
-@Stateless
+@Transactional
 public interface IGenericDAO<T extends IEntity<?>> {
 	
 	/**

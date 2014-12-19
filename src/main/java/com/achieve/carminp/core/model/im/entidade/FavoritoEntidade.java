@@ -1,6 +1,5 @@
 package com.achieve.carminp.core.model.im.entidade;
 
-import java.lang.Long;
 import java.util.LinkedList;
 import java.util.List;
 

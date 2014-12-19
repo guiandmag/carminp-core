@@ -67,7 +67,7 @@ public class UsuarioResource implements IUsuarioResource{
 	 */
 	@Override
 	public Response buscarPorId(final Long id) {
-		UsuarioEntidade usuarioEncontrado = service.getById(id);
+		UsuarioEntidade usuarioEncontrado = service.getUserById(id);
 		
 		if (usuarioEncontrado == null)
 			throw new NotFoundException();
@@ -131,7 +131,7 @@ public class UsuarioResource implements IUsuarioResource{
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Response buscarTodosComClausulas(int start, int size) {
+	public Response buscarUsuarioEFavoritoPorNomeUsuarioComClausulas(int start, int size) {
 		List<UsuarioEntidade> usuariosEncontrados = service.getUserAndFavoritePhrasesWithClause(start, size);
 		
 		if(usuariosEncontrados == null) 

@@ -2,8 +2,6 @@ package com.achieve.carminp.core.business.im.service;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
-
 import com.achieve.carminp.core.business.in.service.IUsuarioService;
 import com.achieve.carminp.core.model.ab.dao.GenericDAO;
 import com.achieve.carminp.core.model.im.entidade.UsuarioEntidade;
@@ -17,7 +15,6 @@ import com.uaihebert.uaicriteria.UaiCriteriaFactory;
  * @version 2.0
  * @see GenericDAO, {@link UsuarioEntidade}, {@link IUsuarioService}
  */
-@Stateless
 public class UsuarioService extends GenericDAO<UsuarioEntidade> implements 
 		IUsuarioService {
 
@@ -63,7 +60,7 @@ public class UsuarioService extends GenericDAO<UsuarioEntidade> implements
 	@Override
 	public List<UsuarioEntidade> getUserAndFavoritePhrases() {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, UsuarioEntidade.class);
-		uaiCriteria.innerJoinFetch("favoritos").orderByAsc("nomeUsuario").setDistinctTrue();
+		uaiCriteria.innerJoinFetch("favoritos.frases").orderByAsc("nomeUsuario").setDistinctTrue();
 		results = uaiCriteria.getResultList();
 		
 		return results;

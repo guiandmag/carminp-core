@@ -64,6 +64,6 @@ public interface IUsuarioResource extends IGenericRest<UsuarioEntidade> {
 	 */
 	@GET
 	@Path("/favoritos/pag")
-	Response buscarTodosComClausulas(@DefaultValue("1") @QueryParam("start") int start, @DefaultValue("5") @QueryParam("size") int size);
+	Response buscarUsuarioEFavoritoPorNomeUsuarioComClausulas(@DefaultValue("1") @QueryParam("start") int start, @DefaultValue("5") @QueryParam("size") int size);
 	
 }

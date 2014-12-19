@@ -2,8 +2,6 @@ package com.achieve.carminp.core.business.im.service;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
-
 import com.achieve.carminp.core.business.in.service.IFraseService;
 import com.achieve.carminp.core.model.ab.dao.GenericDAO;
 import com.achieve.carminp.core.model.im.entidade.FraseEntidade;
@@ -18,7 +16,6 @@ import com.uaihebert.uaicriteria.UaiCriteriaFactory;
  * @since 10/2014
  * @see GenericDAO, {@link FraseEntidade}, {@link IFraseService}
  */
-@Stateless
 public class FraseService extends GenericDAO<FraseEntidade> implements 
 		IFraseService {
 
@@ -55,7 +52,20 @@ public class FraseService extends GenericDAO<FraseEntidade> implements
 	@Override
 	public List<FraseEntidade> getAllPhrases() {
 		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, FraseEntidade.class);
-		uaiCriteria.innerJoinFetch("autor").orderByAsc("id");
+		uaiCriteria.innerJoinFetch("autor.favorito").orderByAsc("id");
+		results = uaiCriteria.getResultList();
+		
+		return results;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 */
+	@Override
+	public List<FraseEntidade> getPhrasesByAuthorName(String name) {
+		uaiCriteria = UaiCriteriaFactory.createQueryCriteria(em, FraseEntidade.class);
+		uaiCriteria.innerJoinFetch("autor").andStringLike(true, "autor.nome", "%" + name + "%");
 		results = uaiCriteria.getResultList();
 		
 		return results;

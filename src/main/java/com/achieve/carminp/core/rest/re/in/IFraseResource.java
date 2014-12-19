@@ -23,7 +23,7 @@ import com.achieve.carminp.core.model.im.entidade.FraseEntidade;
  * 
  * @author guilherme.magalhaes
  * @since 11/2014
- * @version 1.1
+ * @version 2.0
  */
 @RequestScoped
 @Consumes(MediaType.APPLICATION_JSON)
@@ -85,5 +85,16 @@ public interface IFraseResource {
 	@GET
 	@Path("/autor/{id:[0-9][0-9]*}")
 	Response buscarFrasePorAutorId(@PathParam("id") Long idAutor);
+	
+	/**
+	 * Metodo para recuperar as frases pelo
+	 * nome do autor na API de <b>REST</b>.
+	 * 
+	 * @param nomeAutor
+	 * @return
+	 */
+	@GET
+	@Path("/autor/{nome}")
+	Response buscarFrasePorAutorNome(@PathParam("nome") String nomeAutor);
 
 }

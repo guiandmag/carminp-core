@@ -19,7 +19,7 @@ import com.achieve.carminp.core.rest.ge.in.IGenericRest;
  * 
  * @author guilherme.magalhaes
  * @since 11/2014
- * @version 1.1
+ * @version 2.0
  * @see IGenericRest
  */
 @RequestScoped

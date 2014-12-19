@@ -87,5 +87,19 @@ public class FraseResource implements IFraseResource{
 			
 		return Response.ok(frasesEcontradas).build();
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 */
+	@Override
+	public Response buscarFrasePorAutorNome(String nomeAutor) {
+		List<FraseEntidade> frasesEcontradas = service.getPhrasesByAuthorName(nomeAutor);
+		
+		if(frasesEcontradas == null) 
+			throw new NotFoundException();
+		
+		return Response.ok(frasesEcontradas).build();
+	}
 	
 }

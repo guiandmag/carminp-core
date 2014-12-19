@@ -2,7 +2,7 @@ package com.achieve.carminp.core.business.in.service;
 
 import java.util.List;
 
-import javax.ejb.Local;
+import javax.transaction.Transactional;
 
 import com.achieve.carminp.core.model.im.entidade.AutorEntidade;
 import com.achieve.carminp.core.model.in.dao.IGenericDAO;
@@ -14,9 +14,9 @@ import com.achieve.carminp.core.model.in.dao.IGenericDAO;
  * @author guilherme.magalhaes
  * @since 09/2014
  * @version 2.0
- * @see AutorEntidade
+ * @see IGenericDAO
  */
-@Local
+@Transactional
 public interface IAutorService extends IGenericDAO<AutorEntidade> {
 	
 	/**
